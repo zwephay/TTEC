@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Customer Search</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  background: #4a6cf7;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #3b5be0;
+}
+
+#result {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+th {
+  background: #4a6cf7;
+  color: white;
+  padding: 12px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f1f5ff;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #555;
+}
+
+.no-result {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🔍 Customer Search System</h2>
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Enter Code or Address..." onkeyup="if(event.key==='Enter') search()">
+    <button onclick="search()">Search</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+async function search() {
+  let q = document.getElementById("search").value;
+
+  document.getElementById("result").innerHTML = "<div class='loading'>Searching...</div>";
+
+  let res = await fetch("https://script.google.com/macros/s/AKfycbzzMJNpwyshFWnQm0z1agXkql2ZVz6cmkrArzW4mJf5vnhca1WX-DXlFoeZg1M-_GhlWQ/exec?q=" + q);
+  let data = await res.json();
+
+  if (data.length === 0) {
+    document.getElementById("result").innerHTML = "<div class='no-result'>No results found</div>";
+    return;
+  }
+
+  let html = "<table>";
+  html += "<tr><th>Code</th><th>Last</th><th>Old</th><th>Diff</th><th>Cost</th><th>Line</th><th>Address</th></tr>";
+
+  data.forEach(item => {
+    html += `<tr>
+      <td>${item.code}</td>
+      <td>${item.last}</td>
+      <td>${item.old}</td>
+      <td>${item.diff}</td>
+      <td>${item.cost}</td>
+      <td>${item.line}</td>
+      <td>${item.address}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+
+  document.getElementById("result").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
