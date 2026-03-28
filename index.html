@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Smart Customer Lookup</title>
+<title>Customer Lookup</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -15,7 +15,6 @@ body {
   color: #e2e8f0;
 }
 
-/* Header */
 .header {
   background: linear-gradient(90deg, #2563eb, #1e40af);
   padding: 18px;
@@ -24,14 +23,12 @@ body {
   font-weight: bold;
 }
 
-/* Container */
 .container {
   max-width: 800px;
   margin: 40px auto;
   padding: 20px;
 }
 
-/* Card */
 .card {
   background: #111827;
   padding: 20px;
@@ -39,7 +36,6 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* Input */
 .input-group {
   display: flex;
   gap: 10px;
@@ -55,7 +51,6 @@ input {
   color: white;
 }
 
-/* Button */
 button {
   padding: 14px 18px;
   border: none;
@@ -63,14 +58,12 @@ button {
   background: #3b82f6;
   color: white;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 button:hover {
   background: #2563eb;
 }
 
-/* Result */
 .result {
   margin-top: 20px;
   background: #0b1220;
@@ -78,7 +71,6 @@ button:hover {
   border-radius: 12px;
 }
 
-/* Row */
 .row {
   display: grid;
   grid-template-columns: 120px 1fr;
@@ -91,7 +83,6 @@ button:hover {
   font-weight: bold;
 }
 
-/* Loader */
 .loader {
   border: 4px solid #1f2937;
   border-top: 4px solid #3b82f6;
@@ -111,14 +102,14 @@ button:hover {
 <body>
 
 <div class="header">
-  <i class="fa-solid fa-database"></i> Smart Customer Lookup
+  <i class="fa-solid fa-database"></i> Customer Lookup
 </div>
 
 <div class="container">
   <div class="card">
 
     <div class="input-group">
-      <input type="text" id="search" placeholder="Enter Code or Line">
+      <input type="text" id="search" placeholder="Enter Code">
       <button onclick="searchData()">
         <i class="fa fa-search"></i>
       </button>
@@ -135,23 +126,15 @@ async function searchData() {
   const resultDiv = document.getElementById("result");
 
   if (!input) {
-    resultDiv.innerHTML = "<p>Please enter a value</p>";
+    resultDiv.innerHTML = "<p>Please enter code</p>";
     return;
   }
 
   resultDiv.innerHTML = "<div class='loader'></div>";
 
   try {
-
-    // Decide search type
-    let url = "https://script.google.com/macros/s/AKfycbyNU3mpd7YxzS17_PHiOZM4uPggOXEOEyACOLM7xRLrVOaKPy-XDO_-sowWBcLsSJHIKA/exec";
-
-    // simple logic: if numeric → code, else → line
-    if (!isNaN(input)) {
-      url += "?code=" + encodeURIComponent(input);
-    } else {
-      url += "?line=" + encodeURIComponent(input);
-    }
+    const url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?code=" 
+                + encodeURIComponent(input);
 
     const res = await fetch(url);
     const data = await res.json();
@@ -161,15 +144,14 @@ async function searchData() {
       return;
     }
 
-    // Only first row
     const item = data[0];
 
     resultDiv.innerHTML = `
       <div class="result">
         <div class="row"><div class="label">Code</div><div>${item.code || ""}</div></div>
-        <div class="row"><div class="label">Last Reading</div><div>${item.last || ""}</div></div>
-        <div class="row"><div class="label">Old Reading</div><div>${item.old || ""}</div></div>
-        <div class="row"><div class="label">Different</div><div>${item.diff || ""}</div></div>
+        <div class="row"><div class="label">Last</div><div>${item.last || ""}</div></div>
+        <div class="row"><div class="label">Old</div><div>${item.old || ""}</div></div>
+        <div class="row"><div class="label">Diff</div><div>${item.diff || ""}</div></div>
         <div class="row"><div class="label">Cost</div><div>${item.cost || ""}</div></div>
         <div class="row"><div class="label">Line</div><div>${item.line || ""}</div></div>
         <div class="row"><div class="label">Address</div><div>${item.address || ""}</div></div>
