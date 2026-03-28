@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Customer Lookup</title>
+<title>Smart Customer Lookup</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -17,10 +17,11 @@ body {
 
 .header {
   background: linear-gradient(90deg, #2563eb, #1e40af);
-  padding: 18px;
+  padding: 20px;
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .container {
@@ -31,9 +32,9 @@ body {
 
 .card {
   background: #111827;
-  padding: 20px;
+  padding: 25px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .input-group {
@@ -49,6 +50,7 @@ input {
   outline: none;
   background: #1f2937;
   color: white;
+  font-size: 16px;
 }
 
 button {
@@ -58,6 +60,7 @@ button {
   background: #3b82f6;
   color: white;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 button:hover {
@@ -65,7 +68,7 @@ button:hover {
 }
 
 .result {
-  margin-top: 20px;
+  margin-top: 25px;
   background: #0b1220;
   padding: 15px;
   border-radius: 12px;
@@ -73,8 +76,8 @@ button:hover {
 
 .row {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  padding: 8px;
+  grid-template-columns: 140px 1fr;
+  padding: 10px;
   border-bottom: 1px solid #1f2937;
 }
 
@@ -102,14 +105,14 @@ button:hover {
 <body>
 
 <div class="header">
-  <i class="fa-solid fa-database"></i> Customer Lookup
+  <i class="fa-solid fa-database"></i> Smart Customer Lookup
 </div>
 
 <div class="container">
   <div class="card">
 
     <div class="input-group">
-      <input type="text" id="search" placeholder="Enter Code">
+      <input type="text" id="search" placeholder="Enter Code or Line" onkeydown="if(event.key==='Enter') searchData()">
       <button onclick="searchData()">
         <i class="fa fa-search"></i>
       </button>
@@ -121,25 +124,35 @@ button:hover {
 </div>
 
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyNU3mpd7YxzS17_PHiOZM4uPggOXEOEyACOLM7xRLrVOaKPy-XDO_-sowWBcLsSJHIKA/exec";
+
 async function searchData() {
   const input = document.getElementById("search").value.trim();
   const resultDiv = document.getElementById("result");
 
   if (!input) {
-    resultDiv.innerHTML = "<p>Please enter code</p>";
+    resultDiv.innerHTML = "<p>Please enter a value</p>";
     return;
   }
 
   resultDiv.innerHTML = "<div class='loader'></div>";
 
   try {
-    const url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?code=" 
-                + encodeURIComponent(input);
+    let url = "";
 
-    const res = await fetch(url);
+    // Decide search type
+    if (!isNaN(input)) {
+      url = API_URL + "?code=" + encodeURIComponent(input);
+    } else {
+      url = API_URL + "?line=" + encodeURIComponent(input);
+    }
+
+    const res = await fetch(url, { cache: "no-store" });
     const data = await res.json();
 
-    if (!data || data.length === 0) {
+    console.log("API RESULT:", data);
+
+    if (!Array.isArray(data) || data.length === 0) {
       resultDiv.innerHTML = "<p>No result found</p>";
       return;
     }
@@ -148,19 +161,19 @@ async function searchData() {
 
     resultDiv.innerHTML = `
       <div class="result">
-        <div class="row"><div class="label">Code</div><div>${item.code || ""}</div></div>
-        <div class="row"><div class="label">Last</div><div>${item.last || ""}</div></div>
-        <div class="row"><div class="label">Old</div><div>${item.old || ""}</div></div>
-        <div class="row"><div class="label">Diff</div><div>${item.diff || ""}</div></div>
-        <div class="row"><div class="label">Cost</div><div>${item.cost || ""}</div></div>
-        <div class="row"><div class="label">Line</div><div>${item.line || ""}</div></div>
-        <div class="row"><div class="label">Address</div><div>${item.address || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-barcode"></i> Code</div><div>${item.code || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-signal"></i> Last</div><div>${item.last || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-history"></i> Old</div><div>${item.old || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-exchange-alt"></i> Diff</div><div>${item.diff || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-money-bill"></i> Cost</div><div>${item.cost || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-layer-group"></i> Line</div><div>${item.line || ""}</div></div>
+        <div class="row"><div class="label"><i class="fa fa-map-marker-alt"></i> Address</div><div>${item.address || ""}</div></div>
       </div>
     `;
 
   } catch (err) {
-    resultDiv.innerHTML = "<p style='color:red;'>Error loading data</p>";
     console.error(err);
+    resultDiv.innerHTML = "<p style='color:red;'>Server Error</p>";
   }
 }
 </script>
