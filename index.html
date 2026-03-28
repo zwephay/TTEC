@@ -114,7 +114,7 @@ async function search() {
 
   document.getElementById("result").innerHTML = "<div class='loading'>Searching...</div>";
 
-  let res = await fetch("https://script.google.com/macros/s/AKfycbzzMJNpwyshFWnQm0z1agXkql2ZVz6cmkrArzW4mJf5vnhca1WX-DXlFoeZg1M-_GhlWQ/exec?q=" + q);
+  let res = await fetch("https://script.google.com/macros/s/AKfycbyNU3mpd7YxzS17_PHiOZM4uPggOXEOEyACOLM7xRLrVOaKPy-XDO_-sowWBcLsSJHIKA/exec?q=" + q);
   let data = await res.json();
 
   if (data.length === 0) {
