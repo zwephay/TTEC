@@ -21,7 +21,6 @@ body {
   text-align: center;
   font-size: 22px;
   font-weight: bold;
-  letter-spacing: 1px;
 }
 
 .container {
@@ -60,7 +59,6 @@ button {
   background: #3b82f6;
   color: white;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 button:hover {
@@ -112,7 +110,7 @@ button:hover {
   <div class="card">
 
     <div class="input-group">
-      <input type="text" id="search" placeholder="Enter Code or Line" onkeydown="if(event.key==='Enter') searchData()">
+      <input type="text" id="search" placeholder="Enter Code" onkeydown="if(event.key==='Enter') searchData()">
       <button onclick="searchData()">
         <i class="fa fa-search"></i>
       </button>
@@ -131,21 +129,14 @@ async function searchData() {
   const resultDiv = document.getElementById("result");
 
   if (!input) {
-    resultDiv.innerHTML = "<p>Please enter a value</p>";
+    resultDiv.innerHTML = "<p>Please enter code</p>";
     return;
   }
 
   resultDiv.innerHTML = "<div class='loader'></div>";
 
   try {
-    let url = "";
-
-    // Decide search type
-    if (!isNaN(input)) {
-      url = API_URL + "?code=" + encodeURIComponent(input);
-    } else {
-      url = API_URL + "?line=" + encodeURIComponent(input);
-    }
+    const url = API_URL + "?code=" + encodeURIComponent(input);
 
     const res = await fetch(url, { cache: "no-store" });
     const data = await res.json();
@@ -161,19 +152,19 @@ async function searchData() {
 
     resultDiv.innerHTML = `
       <div class="result">
-        <div class="row"><div class="label"><i class="fa fa-barcode"></i> Code</div><div>${item.code || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-signal"></i> Last</div><div>${item.last || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-history"></i> Old</div><div>${item.old || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-exchange-alt"></i> Diff</div><div>${item.diff || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-money-bill"></i> Cost</div><div>${item.cost || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-layer-group"></i> Line</div><div>${item.line || ""}</div></div>
-        <div class="row"><div class="label"><i class="fa fa-map-marker-alt"></i> Address</div><div>${item.address || ""}</div></div>
+        <div class="row"><div class="label">Code</div><div>${item.code || ""}</div></div>
+        <div class="row"><div class="label">Last</div><div>${item.last || ""}</div></div>
+        <div class="row"><div class="label">Old</div><div>${item.old || ""}</div></div>
+        <div class="row"><div class="label">Diff</div><div>${item.diff || ""}</div></div>
+        <div class="row"><div class="label">Cost</div><div>${item.cost || ""}</div></div>
+        <div class="row"><div class="label">Line</div><div>${item.line || ""}</div></div>
+        <div class="row"><div class="label">Address</div><div>${item.address || ""}</div></div>
       </div>
     `;
 
   } catch (err) {
     console.error(err);
-    resultDiv.innerHTML = "<p style='color:red;'>Server Error</p>";
+    resultDiv.innerHTML = "<p style='color:red;'>Error loading data</p>";
   }
 }
 </script>
