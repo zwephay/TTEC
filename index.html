@@ -203,28 +203,29 @@ async function searchData() {
     const item = data[0];
 
     resultDiv.innerHTML = `
-      <div class="result">
+  <div class="result">
 
-        ${row("ကွန်ပျူတာကုဒ်", item.code)}
-        ${row("နောက်ဆုံးဖတ်ယူနစ်", item.last)}
-        ${row("ယခင်ယူနစ်", item.old)}
-        ${row("ကွာခြားယူနစ်", item.diff)}
-        ${row("ကျသင့်ငွေ", item.cost, true)}
-        ${row("လိုင်းနံပတ်", item.line)}
-        ${row("အမည်", item.name)}
-        ${row("လိပ်စာ", item.address)}
-        ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
-        ${row("မြှောက်ကိန်း", item.multiplier)}
-        ${row("သုံးစွဲယူနစ်", item.used_unit)}
-        ${row("5% ကျသင့်ငွေ", item.tax_5, true)}
-        ${row("ယူနစ်နှုန်း", item.unit_price, true)}
-        ${row("ဝန်ဆောင်ခ", item.service_fee, true)}
-        ${row("ကြွေးကျန်", item.debt, true)}
-        ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
-        ${row("မီတာအသစ်/အဟောင်းလဲလှယ်ယူနစ်", item.meter_change)}
+    ${row("ကွန်ပျူတာကုဒ်", item.code)}
+    ${row("လိုင်းနံပတ်", item.line)}
+    ${row("အမည်", item.name)}
+    ${row("လိပ်စာ", item.address)}
 
-      </div>
-    `;
+    ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
+    ${row("ယခင်ဖတ်ယူနစ်", item.previous_unit)}
+    ${row("သုံးစွဲယူနစ်", item.used_unit)}
+
+    ${row("မြှောက်ကိန်း", item.multiplier)}
+    ${row("ယူနစ်နှုန်း", item.unit_price, true)}
+
+    ${row("5% ကျသင့်ငွေ", item.tax_5, true)}
+    ${row("ဝန်ဆောင်ခ", item.service_fee, true)}
+    ${row("ကြွေးကျန်", item.debt, true)}
+
+    ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
+    ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
+
+  </div>
+`;
 
   } catch (err) {
     console.error(err);
