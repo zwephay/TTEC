@@ -39,6 +39,7 @@ body {
 .input-group {
   display: flex;
   gap: 10px;
+  position: relative;
 }
 
 input {
@@ -63,6 +64,30 @@ button {
 
 button:hover {
   background: #2563eb;
+}
+
+/* suggestions dropdown */
+.suggestions {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.suggestions div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #1f2937;
+}
+
+.suggestions div:hover {
+  background: #1f2937;
 }
 
 .result {
@@ -110,10 +135,15 @@ button:hover {
   <div class="card">
 
     <div class="input-group">
-      <input type="text" id="search" placeholder="Enter Code" onkeydown="if(event.key==='Enter') searchData()">
+      <input type="text" id="search" placeholder="Enter Code" 
+        onkeyup="getSuggestions()" 
+        onkeydown="if(event.key==='Enter') searchData()">
+
       <button onclick="searchData()">
         <i class="fa fa-search"></i>
       </button>
+
+      <div id="suggestions" class="suggestions"></div>
     </div>
 
     <div id="result"></div>
@@ -122,8 +152,10 @@ button:hover {
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyNU3mpd7YxzS17_PHiOZM4uPggOXEOEyACOLM7xRLrVOaKPy-XDO_-sowWBcLsSJHIKA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxDFo80ITN_bchsfCCfGuHZ0OiesWFHhae_yveLsEVkjAgpEagxmcR9Ydfo9pwBY2LZRw/exec";
 
+
+// ✅ SEARCH RESULT
 async function searchData() {
   const input = document.getElementById("search").value.trim();
   const resultDiv = document.getElementById("result");
@@ -136,12 +168,10 @@ async function searchData() {
   resultDiv.innerHTML = "<div class='loader'></div>";
 
   try {
-    const url = API_URL + "?code=" + encodeURIComponent(input);
+    const url = API_URL + "?code=" + encodeURIComponent(input) + "&t=" + Date.now();
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url);
     const data = await res.json();
-
-    console.log("API RESULT:", data);
 
     if (!Array.isArray(data) || data.length === 0) {
       resultDiv.innerHTML = "<p>No result found</p>";
@@ -166,6 +196,50 @@ async function searchData() {
     console.error(err);
     resultDiv.innerHTML = "<p style='color:red;'>Error loading data</p>";
   }
+}
+
+
+// ✅ AUTO SUGGEST
+async function getSuggestions() {
+  const keyword = document.getElementById("search").value.trim();
+  const box = document.getElementById("suggestions");
+
+  if (!keyword) {
+    box.innerHTML = "";
+    return;
+  }
+
+  try {
+    const url = API_URL + "?suggest=" + encodeURIComponent(keyword) + "&t=" + Date.now();
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      box.innerHTML = "";
+      return;
+    }
+
+    let html = "";
+
+    data.forEach(item => {
+      html += `<div onclick="selectCode('${item.code}')">
+        ${item.code} - ${item.address}
+      </div>`;
+    });
+
+    box.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+// ✅ select suggestion
+function selectCode(code) {
+  document.getElementById("search").value = code;
+  document.getElementById("suggestions").innerHTML = "";
 }
 </script>
 
