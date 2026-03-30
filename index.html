@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>မီတာဘေကျသင့်ငွေအားစစ်ဆေးရန်</title>
+<title>မီတာဘေကျသင့်ငွေအား စစ်ဆေးရန်</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -11,7 +11,7 @@
 body {
   margin: 0;
   font-family: "Segoe UI", Arial;
-  background: #f1f5f9; /* light soft background */
+  background: #f1f5f9;
   color: #111827;
 }
 
@@ -40,7 +40,6 @@ body {
 .input-group {
   display: flex;
   gap: 10px;
-  position: relative;
 }
 
 input {
@@ -65,31 +64,6 @@ button:hover {
   background: #1e40af;
 }
 
-/* suggestions */
-.suggestions {
-  position: absolute;
-  top: 55px;
-  left: 0;
-  right: 0;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.suggestions div {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-}
-
-.suggestions div:hover {
-  background: #f3f4f6;
-}
-
-/* result */
 .result {
   margin-top: 25px;
   background: #f9fafb;
@@ -109,7 +83,6 @@ button:hover {
   font-weight: bold;
 }
 
-/* loader */
 .loader {
   border: 4px solid #e5e7eb;
   border-top: 4px solid #2563eb;
@@ -137,14 +110,11 @@ button:hover {
 
     <div class="input-group">
       <input type="text" id="search" placeholder="Enter Code"
-        onkeyup="getSuggestions()"
         onkeydown="if(event.key==='Enter') searchData()">
 
       <button onclick="searchData()">
         <i class="fa fa-search"></i>
       </button>
-
-      <div id="suggestions" class="suggestions"></div>
     </div>
 
     <div id="result"></div>
@@ -155,8 +125,6 @@ button:hover {
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxBLYQvGT8eDWe1_FarBnw-LVdggBF79S0FgcYSl4V_nYDT-p63ScNl4C60vob4vPmywQ/exec";
 
-
-// helper row
 function row(label, value, isCurrency = false) {
   if (value === 0 || value === "0" || value === null || value === undefined || value === "") {
     return "";
@@ -176,8 +144,6 @@ function row(label, value, isCurrency = false) {
   `;
 }
 
-
-// search
 async function searchData() {
   const input = document.getElementById("search").value.trim();
   const resultDiv = document.getElementById("result");
@@ -203,74 +169,34 @@ async function searchData() {
     const item = data[0];
 
     resultDiv.innerHTML = `
-  <div class="result">
+      <div class="result">
 
-    ${row("ကွန်ပျူတာကုဒ်", item.code)}
-    ${row("လိုင်းနံပတ်", item.line)}
-    ${row("အမည်", item.name)}
-    ${row("လိပ်စာ", item.address)}
+        ${row("ကွန်ပျူတာကုဒ်", item.code)}
+        ${row("လိုင်းနံပတ်", item.line)}
+        ${row("အမည်", item.name)}
+        ${row("လိပ်စာ", item.address)}
 
-    ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
-    ${row("ယခင်ဖတ်ယူနစ်", item.previous_unit)}
-    ${row("သုံးစွဲယူနစ်", item.used_unit)}
+        ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
+        ${row("ယခင်ဖတ်ယူနစ်", item.previous_unit)}
+        ${row("သုံးစွဲယူနစ်", item.used_unit)}
+        ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
+        
+        ${row("မြှောက်ကိန်း", item.multiplier)}
+        ${row("ယူနစ်နှုန်း", item.unit_price, true)}
 
-    ${row("မြှောက်ကိန်း", item.multiplier)}
-    ${row("ယူနစ်နှုန်း", item.unit_price, true)}
+        ${row("5% ကျသင့်ငွေ", item.tax_5, true)}
+        ${row("ဝန်ဆောင်ခ", item.service_fee, true)}
+        ${row("ကြွေးကျန်", item.debt, true)}
 
-    ${row("5% ကျသင့်ငွေ", item.tax_5, true)}
-    ${row("ဝန်ဆောင်ခ", item.service_fee, true)}
-    ${row("ကြွေးကျန်", item.debt, true)}
+        ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
 
-    ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
-    ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
-
-  </div>
-`;
+      </div>
+    `;
 
   } catch (err) {
     console.error(err);
     resultDiv.innerHTML = "<p style='color:red;'>Error loading data</p>";
   }
-}
-
-
-// suggestions
-async function getSuggestions() {
-  const keyword = document.getElementById("search").value.trim();
-  const box = document.getElementById("suggestions");
-
-  if (!keyword) {
-    box.innerHTML = "";
-    return;
-  }
-
-  try {
-    const url = API_URL + "?suggest=" + encodeURIComponent(keyword) + "&t=" + Date.now();
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      box.innerHTML = "";
-      return;
-    }
-
-    box.innerHTML = data.map(item => `
-      <div onclick="selectCode('${item.code}')">
-        ${item.code} - ${item.address || ""}
-      </div>
-    `).join("");
-
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-
-// select suggestion
-function selectCode(code) {
-  document.getElementById("search").value = code;
-  document.getElementById("suggestions").innerHTML = "";
 }
 </script>
 
