@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>မီတာဘေကျသင့်ငွေအား စစ်ဆေးရန်</title>
+<title>မီတာဘေကျသင့်ငွေအားစစ်ဆေးရန်</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -96,6 +96,51 @@ button:hover {
 @keyframes spin {
   100% { transform: rotate(360deg); }
 }
+
+/* 📱 Mobile Responsive */
+@media (max-width: 600px) {
+
+  .container {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .header {
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  input, button {
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    background: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .row div:last-child {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+}
 </style>
 </head>
 
@@ -125,6 +170,7 @@ button:hover {
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxBLYQvGT8eDWe1_FarBnw-LVdggBF79S0FgcYSl4V_nYDT-p63ScNl4C60vob4vPmywQ/exec";
 
+// helper row
 function row(label, value, isCurrency = false) {
   if (value === 0 || value === "0" || value === null || value === undefined || value === "") {
     return "";
@@ -144,6 +190,7 @@ function row(label, value, isCurrency = false) {
   `;
 }
 
+// search
 async function searchData() {
   const input = document.getElementById("search").value.trim();
   const resultDiv = document.getElementById("result");
@@ -179,8 +226,7 @@ async function searchData() {
         ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
         ${row("ယခင်ဖတ်ယူနစ်", item.previous_unit)}
         ${row("သုံးစွဲယူနစ်", item.used_unit)}
-        ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
-        
+
         ${row("မြှောက်ကိန်း", item.multiplier)}
         ${row("ယူနစ်နှုန်း", item.unit_price, true)}
 
@@ -189,6 +235,7 @@ async function searchData() {
         ${row("ကြွေးကျန်", item.debt, true)}
 
         ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
+        ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
 
       </div>
     `;
