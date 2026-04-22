@@ -1,165 +1,250 @@
 <!DOCTYPE html>
-<html>
+<html lang="my">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<title>မီတာဘေကျသင့်ငွေအားစစ်ဆေးရန်</title>
+<title>မီတာဘေ က်သင့္ေငြအား စစ်ဆေးရန်</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial;
-  background: #f1f5f9;
-  color: #111827;
+:root{
+  --primary:#2563eb;
+  --bg:#eef2f7;
+  --text:#0f172a;
+  --muted:#64748b;
 }
 
-.header {
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-  padding: 20px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  height:100%;
+  overflow:hidden; 
+  font-family:"Segoe UI",system-ui;
+  background:linear-gradient(135deg,#eef2f7,#e2e8f0);
+  color:var(--text);
 }
 
-.container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
+/* WRAPPER */
+.wrapper{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
 }
 
-.card {
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+/* CARD */
+.card{
+  width:100%;
+  max-width:420px;
+  max-height:90vh;
+  overflow:auto; /* only card scroll */
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:24px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.1);
+  text-align:center;
 }
 
-.input-group {
-  display: flex;
-  gap: 10px;
+/* TITLE */
+.title{
+  font-size:20px;
+  font-weight:600;
+  margin-bottom:18px;
 }
 
-input {
-  flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  outline: none;
-  font-size: 16px;
+/* MENU */
+.menu-btn{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#3b82f6,#1e40af);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.25s;
+}
+.menu-btn:hover{
+  transform:translateY(-2px);
 }
 
-button {
-  padding: 14px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
+/* INPUT */
+.input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #e2e8f0;
+  margin-bottom:12px;
+}
+.input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+  outline:none;
 }
 
-button:hover {
-  background: #1e40af;
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
 }
 
-.result {
-  margin-top: 25px;
-  background: #f9fafb;
-  padding: 15px;
-  border-radius: 12px;
+/* BACK */
+.back{
+  text-align:left;
+  margin-bottom:10px;
+  color:var(--primary);
+  cursor:pointer;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  padding: 10px;
-  border-bottom: 1px solid #e5e7eb;
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
 
-.label {
-  color: #2563eb;
-  font-weight: bold;
+/* MODAL */
+.modal{
+  position:relative;
+  width:95%;
+  max-width:500px;
+  max-height:85vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  animation:fadeUp 0.3s ease;
 }
 
-.loader {
-  border: 4px solid #e5e7eb;
-  border-top: 4px solid #2563eb;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  animation: spin 0.8s linear infinite;
-  margin: 20px auto;
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(25px)}
+  to{opacity:1; transform:translateY(0)}
 }
 
-@keyframes spin {
-  100% { transform: rotate(360deg); }
+/* CLOSE */
+.close-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f1f5f9;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  cursor:pointer;
+  transition:0.25s;
+}
+.close-btn:hover{
+  transform:rotate(90deg) scale(1.1);
+  background:#fee2e2;
+  color:#dc2626;
 }
 
-/* 📱 Mobile Responsive */
-@media (max-width: 600px) {
+/* SECTION */
+.section{
+  margin-top:15px;
+  padding:14px;
+  border-radius:12px;
+}
+.section-title{
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+  color:var(--muted);
+}
+.info{background:#f8fafc;}
+.unit{background:#f1f5f9;}
+.bill{background:#fff7ed;}
 
-  .container {
-    margin: 10px;
-    padding: 10px;
-  }
+/* ROW */
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px dashed #e2e8f0;
+}
+.row:last-child{border-bottom:none}
 
-  .card {
-    padding: 15px;
-  }
+/* TOTAL */
+.total{
+  margin-top:12px;
+  padding:14px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:#fff;
+  font-weight:bold;
+  display:flex;
+  justify-content:space-between;
+}
 
-  .header {
-    font-size: 18px;
-    padding: 15px;
-  }
+/* LOADER */
+.center{text-align:center;padding:20px}
+.loader{
+  border:4px solid #eee;
+  border-top:4px solid var(--primary);
+  border-radius:50%;
+  width:28px;height:28px;
+  margin:auto;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  .input-group {
-    flex-direction: column;
-  }
-
-  input, button {
-    width: 100%;
-  }
-
-  .row {
-    grid-template-columns: 1fr;
-    gap: 5px;
-    background: #ffffff;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    border: 1px solid #e5e7eb;
-  }
-
-  .label {
-    font-size: 14px;
-  }
-
-  .row div:last-child {
-    font-size: 15px;
-    font-weight: 500;
-  }
-
+/* MOBILE */
+@media(max-width:480px){
+  .title{font-size:18px}
+  .btn,.menu-btn{padding:12px;font-size:14px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <i class="fa-solid fa-database"></i> မီတာဘေကျသင့်ငွေအားစစ်ဆေးရန်
+<div class="wrapper">
+
+  <!-- MENU -->
+  <div class="card" id="menu">
+    <div class="title">မီတာဘေ စစ်ဆေးရန်</div>
+    <button class="menu-btn" onclick="openPage('current')">ယခုလ မီတာခကျသင့်ငွေ</button>
+    <button class="menu-btn" onclick="openPage('previous')">ယခင်လ မီတာခကျသင့်ငွေ</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="card" id="searchPage" style="display:none">
+    <div class="back" onclick="goBack()">⬅ နောက်သို့</div>
+    <div class="title" id="pageTitle"></div>
+
+    <input id="search" class="input" placeholder="ကုဒ်ထည့်ပါ"
+      onkeydown="if(event.key==='Enter') searchData()">
+
+    <button class="btn" onclick="searchData()">ရှာရန်</button>
+  </div>
+
 </div>
 
-<div class="container">
-  <div class="card">
+<!-- RESULT -->
+<div id="overlay" class="overlay" onclick="closeResult()">
+  <div class="modal" onclick="event.stopPropagation()">
 
-    <div class="input-group">
-      <input type="text" id="search" placeholder="လူကြီးမင်း၏ Code အားရိုက်ထည့်ပေးပါ"
-        onkeydown="if(event.key==='Enter') searchData()">
-
-      <button onclick="searchData()">
-        <i class="fa fa-search"></i>
-      </button>
+    <div class="close-btn" onclick="closeResult()">
+      <i class="fa-solid fa-xmark"></i>
     </div>
 
     <div id="result"></div>
@@ -168,83 +253,111 @@ button:hover {
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxBLYQvGT8eDWe1_FarBnw-LVdggBF79S0FgcYSl4V_nYDT-p63ScNl4C60vob4vPmywQ/exec";
+let mode="current";
 
-// helper row
-function row(label, value, isCurrency = false) {
-  if (value === 0 || value === "0" || value === null || value === undefined || value === "") {
-    return "";
-  }
+const API_CURRENT="https://script.google.com/macros/s/AKfycbxBLYQvGT8eDWe1_FarBnw-LVdggBF79S0FgcYSl4V_nYDT-p63ScNl4C60vob4vPmywQ/exec";
+const API_PREVIOUS="https://script.google.com/macros/s/AKfycbzeHwnmnKsQ5VEyFve-_AHEKcEBm7M58DwgkxSfShVtRuWGcv4mXP7JxOxhknvVcjV9/exec";
 
-  let displayValue = value;
-
-  if (isCurrency && !isNaN(value)) {
-    displayValue = Number(value).toLocaleString() + " ฿";
-  }
-
-  return `
-    <div class="row">
-      <div class="label">${label}</div>
-      <div>${displayValue}</div>
-    </div>
-  `;
+function openPage(type){
+  mode=type;
+  menu.style.display="none";
+  searchPage.style.display="block";
+  pageTitle.innerText = type==="current"?"ယခုလ မီတာဘေ":"ယခင်လ မီတာဘေ";
 }
 
-// search
-async function searchData() {
-  const input = document.getElementById("search").value.trim();
-  const resultDiv = document.getElementById("result");
+function goBack(){
+  menu.style.display="block";
+  searchPage.style.display="none";
+}
 
-  if (!input) {
-    resultDiv.innerHTML = "<p>Please enter code</p>";
-    return;
-  }
+function closeResult(){
+  overlay.style.display="none";
+}
 
-  resultDiv.innerHTML = "<div class='loader'></div>";
+function row(label,value,money=false){
+  if(value===null||value===undefined||value==="") return "";
+  let v=value;
+  if(money && !isNaN(value)) v=Number(value).toLocaleString()+" ฿";
+  return `<div class="row"><span>${label}</span><span>${v}</span></div>`;
+}
 
-  try {
-    const url = API_URL + "?code=" + encodeURIComponent(input) + "&t=" + Date.now();
+async function searchData(){
+  const input=search.value.trim();
+  if(!input) return;
 
-    const res = await fetch(url);
-    const data = await res.json();
+  overlay.style.display="flex";
 
-    if (!Array.isArray(data) || data.length === 0) {
-      resultDiv.innerHTML = "<p>No result found</p>";
+  result.innerHTML=`
+    <div class="center">
+      <div class="loader"></div>
+      <div>ရှာဖွေနေပါသည်...</div>
+    </div>
+  `;
+
+  const API = mode==="current"?API_CURRENT:API_PREVIOUS;
+
+  try{
+    const res=await fetch(API+"?code="+encodeURIComponent(input)+"&t="+Date.now());
+    const data=await res.json();
+
+    if(!data.length){
+      result.innerHTML="<div class='center'>မတွေ့ပါ</div>";
       return;
     }
 
-    const item = data[0];
+    const x=data[0];
 
-    resultDiv.innerHTML = `
-      <div class="result">
+    const total =
+      Number(x.tax_5||0)+
+      Number(x.service_fee||0)+
+      Number(x.debt||0)+
+      Number(x.total||0);
 
-        ${row("ကွန်ပျူတာကုဒ်", item.code)}
-        ${row("လိုင်းနံပတ်", item.line)}
-        ${row("အမည်", item.name)}
-        ${row("လိပ်စာ", item.address)}
+    result.innerHTML=`
+      <div class="section info">
+        <div class="section-title">အချက်အလက်</div>
+        ${row("ကုဒ်",x.code)}
+        ${row("လိုင်း",x.line)}
+        ${row("အမည်",x.name)}
+        ${row("လိပ်စာ",x.address)}
+      </div>
 
-        ${row("ယခုဖတ်ယူနစ်", item.current_unit)}
-        ${row("ယခင်ဖတ်ယူနစ်", item.previous_unit)}
-        ${row("သုံးစွဲယူနစ်", item.used_unit)}
+      <div class="section unit">
+        <div class="section-title">ယူနစ်</div>
+        ${row("ယခုယူနစ်",x.current_unit)}
+        ${row("ယခင်ယူနစ်",x.previous_unit)}
+        ${row("သုံးစွဲယူနစ်",x.used_unit)}
+        ${row("မြှောက်ကိန်း",x.multiplier)}
+        ${row("ယူနစ်နှုန်း",x.unit_price,true)}
+        ${row("မီတာလဲယူနစ်",x.meter_change)}
+      </div>
 
-        ${row("မြှောက်ကိန်း", item.multiplier)}
-        ${row("ယူနစ်နှုန်း", item.unit_price, true)}
+      <div class="section bill">
+        <div class="section-title">ငွေတွက်ချက်မှု</div>
+        ${row("Tr 5% ",x.tax_5,true)}
+        ${row("ဝန်ဆောင်ခ",x.service_fee,true)}
+        ${row("ကြွေးကျန်",x.debt,true)}
+        ${row("ယူနစ်ဖိုးကျသင့်ငွေ",x.total,true)}
+      </div>
 
-        ${row("5% ကျသင့်ငွေ", item.tax_5, true)}
-        ${row("ဝန်ဆောင်ခ", item.service_fee, true)}
-        ${row("ကြွေးကျန်", item.debt, true)}
-
-        ${row("ကျသင့်ငွေပေါင်း", item.total, true)}
-        ${row("မီတာလဲလှယ်ယူနစ်", item.meter_change)}
-
+      <div class="total">
+        <span>စုစုပေါင်း ကျသင့်ငွေ</span>
+        <span>${total.toLocaleString()} ฿</span>
       </div>
     `;
 
-  } catch (err) {
-    console.error(err);
-    resultDiv.innerHTML = "<p style='color:red;'>Error loading data</p>";
+  }catch(e){
+    result.innerHTML="<div class='center' style='color:red'>Server Error</div>";
   }
 }
+
+
+function sendHeight(){
+  const h=document.body.scrollHeight;
+  parent.postMessage({type:"resize",height:h},"*");
+}
+window.onload=sendHeight;
+window.onresize=sendHeight;
 </script>
 
 </body>
