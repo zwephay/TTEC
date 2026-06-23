@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>မီတာခ ကျသင့်ငွေ စစ်ဆေးရန်</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -12,19 +13,14 @@
   --primary:#2563eb;
   --primary-dark:#1e40af;
   --primary-glow:rgba(37,99,235,.15);
-
   --accent:#f59e0b;
   --success:#16a34a;
   --danger:#dc2626;
-
   --bg:#eef2f7;
-
   --surface:rgba(255,255,255,.92);
   --surface-2:#ffffff;
   --surface-3:#f8fafc;
-
   --border:#e2e8f0;
-
   --text:#0f172a;
   --text-muted:#64748b;
   --text-dim:#94a3b8;
@@ -34,13 +30,12 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   font-family: 'Noto Sans Myanmar', sans-serif;
   background: linear-gradient(135deg,#eef2f7,#e2e8f0);
   color: var(--text);
 }
 
-/* ─── BACKGROUND ─────────────────────────────── */
 .bg-scene {
   position: fixed;
   inset: 0;
@@ -63,27 +58,18 @@ html, body {
   opacity: 0.4;
 }
 .orb-1{
-  width:500px;
-  height:500px;
-  background:#93c5fd;
-  top:-150px;
-  right:-100px;
+  width:500px; height:500px; background:#93c5fd;
+  top:-150px; right:-100px;
   animation:orbFloat 12s ease-in-out infinite;
 }
 .orb-2{
-  width:350px;
-  height:350px;
-  background:#bfdbfe;
-  bottom:-80px;
-  left:-80px;
+  width:350px; height:350px; background:#bfdbfe;
+  bottom:-80px; left:-80px;
   animation:orbFloat 16s ease-in-out infinite reverse;
 }
 .orb-3{
-  width:200px;
-  height:200px;
-  background:#fde68a;
-  top:40%;
-  left:50%;
+  width:200px; height:200px; background:#fde68a;
+  top:40%; left:50%;
   transform:translate(-50%,-50%);
   animation:orbPulse 8s ease-in-out infinite;
   opacity:.18;
@@ -98,485 +84,254 @@ html, body {
   50% { transform: translate(-50%,-50%) scale(1.3); opacity: 0.2; }
 }
 
-/* ─── WRAPPER ─────────────────────────────────── */
 .wrapper{
-  position:relative;
-  z-index:1;
-  min-height:100vh;
-  padding:40px 16px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  overflow:auto;
+  position:relative; z-index:1; min-height:100vh;
+  padding:20px 16px; display:flex; flex-direction:column;
+  align-items:center; overflow:auto;
 }
 
-/* ─── CARD ────────────────────────────────────── */
 .card{
-  width:100%;
-  max-width:440px;
-  max-height:92vh;
-  overflow-y:auto;
-  overflow-x:hidden;
-
+  width:100%; max-width:440px;
+  overflow-y:auto; overflow-x:hidden;
   background:rgba(255,255,255,.92);
-
   backdrop-filter:blur(12px);
-
   border:1px solid rgba(255,255,255,.7);
-
-  border-radius:24px;
-
-  padding:28px 24px;
-
+  border-radius:24px; padding:28px 24px;
   box-shadow:0 20px 50px rgba(0,0,0,.08);
-
-  scrollbar-width:thin;
-  scrollbar-color:#cbd5e1 transparent;
+  scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent;
 }
 
-/* ─── LOGO / HEADER ───────────────────────────── */
-.logo-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 28px;
-}
+.logo-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:28px; }
 .logo-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #0ea5e9, #0369a1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  color: white;
-  box-shadow: 0 8px 30px rgba(14,165,233,0.4);
-  margin-bottom: 14px;
-  position: relative;
-  overflow: hidden;
+  width:64px; height:64px; border-radius:18px;
+  background:linear-gradient(135deg,#0ea5e9,#0369a1);
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; color:white;
+  box-shadow:0 8px 30px rgba(14,165,233,0.4);
+  margin-bottom:14px; position:relative; overflow:hidden;
 }
 .logo-icon::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 50%;
-  background: rgba(255,255,255,0.12);
-  border-radius: 18px 18px 0 0;
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:50%; background:rgba(255,255,255,0.12);
+  border-radius:18px 18px 0 0;
 }
-.logo-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: 0.01em;
-}
-.logo-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  letter-spacing: 0.05em;
-}
+.logo-title { font-size:20px; font-weight:700; color:var(--text); letter-spacing:0.01em; }
 .divider {
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  margin: 14px auto 0;
+  width:60px; height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);
+  margin:14px auto 0;
 }
 
-/* ─── MENU BUTTONS ────────────────────────────── */
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+.menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .menu-card{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  padding:20px 14px;
-  cursor:pointer;
+  background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px;
+  padding:20px 14px; cursor:pointer;
   transition:all .3s cubic-bezier(.34,1.56,.64,1);
-  text-align:center;
-  position:relative;
-  overflow:hidden;
+  text-align:center; position:relative; overflow:hidden;
 }
 .menu-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  opacity: 0;
-  transition: opacity 0.3s;
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  opacity:0; transition:opacity 0.3s;
 }
-.menu-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 30px rgba(14,165,233,0.2); }
-.menu-card:hover::before { opacity: 0.15; }
-.menu-card:active { transform: scale(0.97); }
+.menu-card:hover { transform:translateY(-4px); border-color:var(--primary); box-shadow:0 12px 30px rgba(14,165,233,0.2); }
+.menu-card:hover::before { opacity:0.15; }
+.menu-card:active { transform:scale(0.97); }
 .menu-card-icon {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 10px;
-  font-size: 18px;
-  box-shadow: 0 4px 14px rgba(14,165,233,0.3);
+  position:relative; width:44px; height:44px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 10px; font-size:18px;
+  box-shadow:0 4px 14px rgba(14,165,233,0.3);
 }
 .menu-card-icon.amber {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  box-shadow: 0 4px 14px rgba(245,158,11,0.3);
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  box-shadow:0 4px 14px rgba(245,158,11,0.3);
 }
-.menu-card-label {
-  position: relative;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.4;
-}
-.menu-card-badge {
-  display: inline-block;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 99px;
-  margin-top: 6px;
-  font-weight: 600;
-}
-.badge-blue { background: rgba(14,165,233,0.15); color: var(--primary); }
-.badge-amber { background: rgba(245,158,11,0.15); color: var(--accent); }
+.menu-card-label { position:relative; font-size:13px; font-weight:600; color:var(--text); line-height:1.4; }
+.menu-card-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:99px; margin-top:6px; font-weight:600; }
+.badge-blue { background:rgba(14,165,233,0.15); color:var(--primary); }
+.badge-amber { background:rgba(245,158,11,0.15); color:var(--accent); }
 
-/* ─── SEARCH PAGE ─────────────────────────────── */
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 6px 0;
-  margin-bottom: 20px;
-  transition: color 0.2s;
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:13px; color:var(--text-muted); cursor:pointer;
+  padding:6px 0; margin-bottom:20px; transition:color 0.2s;
 }
-.back-btn:hover { color: var(--primary); }
+.back-btn:hover { color:var(--primary); }
 
-.page-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 24px;
-}
+.page-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
 .page-header-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
+  width:46px; height:46px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
 }
-.page-header-icon.blue { background: linear-gradient(135deg, #0ea5e9, #0369a1); box-shadow: 0 4px 16px rgba(14,165,233,0.3); }
-.page-header-icon.amber { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 16px rgba(245,158,11,0.3); }
-.page-header-text h2 { font-size: 17px; font-weight: 700; }
-.page-header-text p { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.page-header-icon.blue { background:linear-gradient(135deg,#0ea5e9,#0369a1); box-shadow:0 4px 16px rgba(14,165,233,0.3); }
+.page-header-icon.amber { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 4px 16px rgba(245,158,11,0.3); }
+.page-header-text h2 { font-size:17px; font-weight:700; }
+.page-header-text p { font-size:12px; color:var(--text-muted); margin-top:3px; }
 
-.input-wrap {
-  position: relative;
-  margin-bottom: 14px;
-}
+.input-wrap { position:relative; margin-bottom:14px; }
 .input-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-dim);
-  font-size: 14px;
-  pointer-events: none;
+  position:absolute; left:14px; top:50%;
+  transform:translateY(-50%); color:var(--text-dim);
+  font-size:14px; pointer-events:none;
 }
 .input{
-  width:100%;
-  padding:14px 14px 14px 42px;
-  background:#fff;
-  border:1px solid #dbe4ee;
-  border-radius:14px;
-  color:var(--text);
-  font-family:inherit;
-  font-size:15px;
-  transition:all .25s;
+  width:100%; padding:14px 14px 14px 42px;
+  background:#fff; border:1px solid #dbe4ee;
+  border-radius:14px; color:var(--text);
+  font-family:inherit; font-size:15px; transition:all .25s;
 }
-.input::placeholder { color: var(--text-dim); }
+.input::placeholder { color:var(--text-dim); }
 .input:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: var(--surface-2);
-  box-shadow: 0 0 0 3px var(--primary-glow);
+  outline:none; border-color:var(--primary);
+  background:var(--surface-2); box-shadow:0 0 0 3px var(--primary-glow);
 }
 
 .btn {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0ea5e9, #0369a1);
-  color: #fff;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 6px 24px rgba(14,165,233,0.3);
-  position: relative;
-  overflow: hidden;
+  width:100%; padding:15px; border:none; border-radius:14px;
+  background:linear-gradient(135deg,#0ea5e9,#0369a1);
+  color:#fff; font-family:inherit; font-size:15px; font-weight:700;
+  cursor:pointer; transition:all 0.25s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  box-shadow:0 6px 24px rgba(14,165,233,0.3);
+  position:relative; overflow:hidden;
 }
 .btn::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 50%;
-  background: rgba(255,255,255,0.08);
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:50%; background:rgba(255,255,255,0.08);
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(14,165,233,0.4); }
-.btn:active { transform: scale(0.98); }
-.btn.amber { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 6px 24px rgba(245,158,11,0.3); }
-.btn.amber:hover { box-shadow: 0 10px 30px rgba(245,158,11,0.4); }
+.btn:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(14,165,233,0.4); }
+.btn:active { transform:scale(0.98); }
+.btn.amber { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 6px 24px rgba(245,158,11,0.3); }
+.btn.amber:hover { box-shadow:0 10px 30px rgba(245,158,11,0.4); }
 
-/* ─── OVERLAY / MODAL ─────────────────────────── */
 .overlay{
-  position:fixed;
-  inset:0;
-
+  position:fixed; inset:0;
   background:rgba(15,23,42,.35);
-
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-
-  z-index:100;
-  padding:16px;
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  display:none; align-items:flex-end; justify-content:center;
+  z-index:100; padding:16px;
 }
-.overlay.show { display: flex; animation: fadeIn 0.2s ease; }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.overlay.show { display:flex; animation:fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
 .modal{
-  position:relative;
-  width:100%;
-  max-width:500px;
-  max-height:88vh;
-  overflow-y:auto;
-
-  background:#ffffff;
-
-  border:1px solid #e2e8f0;
-
-  border-radius:24px;
-
-  padding:24px 20px 28px;
-
+  position:relative; width:100%; max-width:500px; max-height:88vh;
+  overflow-y:auto; background:#ffffff; border:1px solid #e2e8f0;
+  border-radius:24px; padding:24px 20px 28px;
   box-shadow:0 20px 60px rgba(0,0,0,.12);
-
   animation:slideUp .35s cubic-bezier(.34,1.3,.64,1);
-
-  scrollbar-width:thin;
-  scrollbar-color:#cbd5e1 transparent;
+  scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent;
 }
-
 @keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform:translateY(40px); opacity:0; }
+  to { transform:translateY(0); opacity:1; }
 }
 
 .modal-handle {
-  width: 40px;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto 20px;
+  width:40px; height:4px; background:var(--border);
+  border-radius:2px; margin:0 auto 20px;
 }
 
 .close-btn {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--surface-3);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: all 0.25s;
-  font-size: 14px;
+  position:absolute; top:18px; right:18px;
+  width:36px; height:36px; border-radius:10px;
+  background:var(--surface-3); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:var(--text-muted); transition:all 0.25s; font-size:14px;
 }
-.close-btn:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: var(--danger); transform: rotate(90deg); }
+.close-btn:hover { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:var(--danger); transform:rotate(90deg); }
 
-/* ─── RESULT SECTIONS ─────────────────────────── */
-.result-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  padding-right: 40px;
-  line-height: 1.4;
-}
+.result-title { font-size:16px; font-weight:700; margin-bottom:16px; padding-right:40px; line-height:1.4; }
 
 .section{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:12px;
+  background:#f8fafc; border:1px solid #e2e8f0;
+  border-radius:16px; padding:16px; margin-bottom:12px;
 }
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.section-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.dot-blue { background: var(--primary); box-shadow: 0 0 6px var(--primary); }
-.dot-purple { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
-.dot-amber { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-.section-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
+.section-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.section-dot { width:8px; height:8px; border-radius:50%; }
+.dot-blue { background:var(--primary); box-shadow:0 0 6px var(--primary); }
+.dot-purple { background:#a855f7; box-shadow:0 0 6px #a855f7; }
+.dot-amber { background:var(--accent); box-shadow:0 0 6px var(--accent); }
+.section-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; }
 
 .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 9px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  gap: 12px;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:9px 0; border-bottom:1px solid rgba(0,0,0,0.05); gap:12px;
 }
-.row:last-child { border-bottom: none; padding-bottom: 0; }
-.row-key {
-  font-size: 13px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-.row-val {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  text-align: right;
-  word-break: break-all;
-}
-.row-val.money{
-  color:#1d4ed8;
-  font-weight:700;
-}
+.row:last-child { border-bottom:none; padding-bottom:0; }
+.row-key { font-size:13px; color:var(--text-muted); flex-shrink:0; }
+.row-val { font-size:14px; font-weight:600; color:var(--text); text-align:right; word-break:break-all; }
+.row-val.money { color:#1d4ed8; font-weight:700; }
 
 .total-card{
-  margin-top:14px;
-  padding:18px 20px;
-  border-radius:16px;
+  margin-top:14px; padding:18px 20px; border-radius:16px;
   background:linear-gradient(135deg,#2563eb,#1e40af);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 8px 30px rgba(37,99,235,.25);
+  display:flex; justify-content:space-between; align-items:center;
+  box-shadow:0 8px 30px rgba(37,99,235,.25); position:relative;
 }
-
 .total-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 50%;
-  background: rgba(255,255,255,0.08);
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:50%; background:rgba(255,255,255,0.08);
+  border-radius:16px 16px 0 0;
 }
-.total-label { position: relative; font-size: 13px; font-weight: 600; opacity: 0.85; }
-
-.total-amount{
-  position:relative;
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:-0.02em;
-  color:#ffffff;
+.total-label { position:relative; font-size:13px; font-weight:600; color:#fff; opacity:0.85; }
+.total-amount {
+  position:relative; font-size:22px; font-weight:800;
+  letter-spacing:-0.02em; color:#ffffff;
   text-shadow:0 1px 3px rgba(0,0,0,.25);
 }
 
 .status-card {
-  margin-top: 12px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  font-size: 14px;
+  margin-top:12px; padding:14px 18px; border-radius:14px;
+  display:flex; align-items:center; gap:12px; font-weight:600; font-size:14px;
 }
-.status-paid {
-  background: rgba(16,185,129,0.12);
-  border: 1px solid rgba(16,185,129,0.25);
-  color: #34d399;
-}
-.status-unpaid {
-  background: rgba(239,68,68,0.1);
-  border: 1px solid rgba(239,68,68,0.2);
-  color: #f87171;
-}
+.status-paid { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); color:#059669; }
+.status-unpaid { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#dc2626; }
 .status-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
 }
-.status-paid .status-icon { background: rgba(16,185,129,0.15); }
-.status-unpaid .status-icon { background: rgba(239,68,68,0.12); }
+.status-paid .status-icon { background:rgba(16,185,129,0.15); }
+.status-unpaid .status-icon { background:rgba(239,68,68,0.12); }
 
-/* ─── LOADER ──────────────────────────────────── */
-.loader-wrap {
-  padding: 40px 20px;
-  text-align: center;
-}
+.loader-wrap { padding:40px 20px; text-align:center; }
 .loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(14,165,233,0.1);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  margin: 0 auto 16px;
-  animation: spin 0.8s linear infinite;
+  width:40px; height:40px;
+  border:3px solid rgba(14,165,233,0.1);
+  border-top-color:var(--primary); border-radius:50%;
+  margin:0 auto 16px; animation:spin 0.8s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loader-text { color: var(--text-muted); font-size: 14px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.loader-text { color:var(--text-muted); font-size:14px; }
 
-.empty-wrap {
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--text-muted);
+.empty-wrap { padding:40px 20px; text-align:center; color:var(--text-muted); }
+.empty-icon { font-size:40px; margin-bottom:12px; opacity:0.4; }
+.empty-text { font-size:15px; font-weight:600; color:var(--text-dim); }
+
+.save-btn {
+  margin-top:16px; width:100%; padding:14px; border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff; font-family:inherit; font-size:15px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  gap:8px; box-shadow:0 6px 20px rgba(22,163,74,0.3); transition:all 0.25s;
 }
-.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
-.empty-text { font-size: 15px; font-weight: 600; color: var(--text-dim); }
+.save-btn:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(22,163,74,0.4); }
+.save-btn:active { transform:scale(0.98); }
 
-/* ─── MOBILE ──────────────────────────────────── */
 @media (max-width: 480px) {
-  .card { padding: 22px 18px; }
-  .menu-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .logo-title { font-size: 18px; }
+  .card { padding:22px 18px; }
+  .menu-grid { grid-template-columns:1fr 1fr; gap:10px; }
+  .logo-title { font-size:18px; }
+}
+
+@keyframes ringPulse {
+  0%,100% { box-shadow:0 0 0 8px rgba(239,68,68,0.06),0 0 0 16px rgba(239,68,68,0.03); }
+  50%      { box-shadow:0 0 0 12px rgba(239,68,68,0.1),0 0 0 22px rgba(239,68,68,0.05); }
 }
 </style>
 </head>
@@ -590,83 +345,48 @@ html, body {
 </div>
 
 <div class="wrapper">
-<!-- TOP HEADER -->
-<div style="
-  width:100%;
-  text-align:center;
-  margin-bottom:30px;
-">
-
-  <!-- TITLE -->
-  <div style="
-    font-size:42px;
-    font-weight:700;
-    color:#111827;
-    margin-bottom:18px;
-    line-height:1.4;
-  ">
-    မီတာဘေလ်စစ်ဆေးရန်
+  <div style="width:100%;text-align:center;margin-bottom:30px;">
+    <div style="font-size:38px;font-weight:700;color:#111827;margin-bottom:18px;line-height:1.4;">
+      မီတာဘေလ်စစ်ဆေးရန်
+    </div>
+    <div style="width:75%;height:10px;background:#15803d;margin:0 auto 45px auto;border-radius:3px;"></div>
+    <div style="color:#dc2626;font-size:14px;line-height:2;max-width:1000px;margin:0 auto;font-weight:500;">
+      ကျသင့်သည့် မီတာခများအား လစဉ် ( 10 မှ 25 ) ရက်နေ့အတွင်း
+      လာရောက်ပေးဆောင်ရမည်ဖြစ်ပါသည်။
+      <br>
+      မီတာခပေးဆောင်ရန် လစဉ် (၂၅) ရက်နေ့ထက်နောက်ကျပါက
+      ရက်လွန်ကြေး ဘတ် (၂၀၀) ထပ်ဆောင်းပေးဆောင်ရပါမည်။
+    </div>
   </div>
 
-  <!-- GREEN LINE -->
-  <div style="
-    width:75%;
-    height:10px;
-    background:#15803d;
-    margin:0 auto 45px auto;
-    border-radius:3px;
-  "></div>
-
-  <!-- NOTICE -->
-  <div style="
-    color:#dc2626;
-    font-size:14px;
-    line-height:2;
-    max-width:1000px;
-    margin:0 auto;
-    font-weight:500;
-  ">
-    ကျသင့်သည့် မီတာခများအား လစဉ် ( 10 မှ 25 ) ရက်နေ့အတွင်း
-    လာရောက်ပေးဆောင်ရမည်ဖြစ်ပါသည်။
-    <br><br>
-    မီတာခပေးဆောင်ရန် လစဉ် (၂၅) ရက်နေ့ထက်နောက်ကျပါက
-    ရက်လွန်ကြေး ဘတ် (၂၀၀) ထပ်ဆောင်းပေးဆောင်ရပါမည်။
-  </div>
-
-</div>
-  <!-- ── MENU ── -->
   <div class="card" id="menu">
     <div class="logo-wrap">
       <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
       <div class="logo-title">မီတာခ ကျသင့်ငွေ စစ်ဆေးရန်</div>
-    
       <div class="divider"></div>
     </div>
-
     <div class="menu-grid">
       <div class="menu-card" onclick="openPage('current')">
         <div class="menu-card-icon">
           <i class="fa-solid fa-calendar-check" style="color:#fff"></i>
         </div>
-        <div class="menu-card-label">ယခုလ<br>မီတာဘေ</div>
+        <div class="menu-card-label">ယခုလ<br>မီတာဘေလ်</div>
         <div class="menu-card-badge badge-blue">Current</div>
       </div>
       <div class="menu-card" onclick="openPage('previous')">
         <div class="menu-card-icon amber">
           <i class="fa-solid fa-clock-rotate-left" style="color:#fff"></i>
         </div>
-        <div class="menu-card-label">ယခင်လ<br>မီတာဘေ</div>
+        <div class="menu-card-label">ယခင်လ<br>မီတာဘေလ်</div>
         <div class="menu-card-badge badge-amber">Previous</div>
       </div>
     </div>
   </div>
 
-  <!-- ── SEARCH PAGE ── -->
   <div class="card" id="searchPage" style="display:none">
     <div class="back-btn" onclick="goBack()">
       <i class="fa-solid fa-arrow-left"></i> နောက်သို့
     </div>
-
     <div class="page-header" id="pageHeader">
       <div class="page-header-icon blue" id="pageIcon">
         <i class="fa-solid fa-calendar-check" style="color:#fff"></i>
@@ -676,7 +396,6 @@ html, body {
         <p>မီတာကုဒ် ထည့်၍ ရှာဖွေပါ</p>
       </div>
     </div>
-
     <div class="input-wrap">
       <span class="input-icon"><i class="fa-solid fa-hashtag"></i></span>
       <input id="searchInput" class="input" placeholder="မီတာကုဒ် ထည့်ပါ..."
@@ -685,11 +404,20 @@ html, body {
     <button class="btn" id="searchBtn" onclick="searchData()">
       <i class="fa-solid fa-magnifying-glass"></i> ရှာဖွေမည်
     </button>
+    <div style="
+      margin-top:14px; padding:13px 16px;
+      background:rgba(37,99,235,0.06);
+      border:1px solid rgba(37,99,235,0.15);
+      border-radius:12px; font-size:13px;
+      color:var(--text-muted); line-height:1.8;
+    ">
+      <i class="fa-solid fa-circle-info" style="color:var(--primary);margin-right:6px"></i>
+      <strong style="color:var(--text)">လမ်းညွှန်</strong> — မီတာဘေလ်ဆောင်စဉ် ယူဆောင်လာသော ကတ်ပြားမှာ
+      <strong style="color:var(--primary)">Code ၆ လုံး</strong> အား ရိုက်ထည့်ပေးပါ။
+    </div>
   </div>
-
 </div>
 
-<!-- ── RESULT OVERLAY ── -->
 <div id="overlay" class="overlay" onclick="closeResult()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
@@ -701,28 +429,24 @@ html, body {
 </div>
 
 <script>
-const API_CURRENT  = "https://script.google.com/macros/s/AKfycbxd8pDVS6JYrSpOD7UNoflaYaxxw9Im1Y9VG4dmQwy7JPX2Fo_4KIuR15_L_uqGrbeZtQ/exec";
-const API_PREVIOUS = "https://script.google.com/macros/s/AKfycbzeHwnmnKsQ5VEyFve-_AHEKcEBm7M58DwgkxSfShVtRuWGcv4mXP7JxOxhknvVcjV9/exec";
+const API_CURRENT  = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4X1ZTeHplbUQ3Z2diY1ZSZndOT3I5ZGpVZHljN0lBd2VyZHJQLUVOcmNKVjlRSnJrdDZBdHJKWnVnandwRzhTWnpHdy9leGVj");
+const API_PREVIOUS = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6ZUh3bm1uS3NRNVZFeUZ2ZS1fQUhFS2NFQm03TTU4RHdna3hTZlNoVnRSdVdHY3Y0bVhQN0p4T3hoa252VmNqVjkvZXhlYw==");
 
 let mode = "current";
-let currentBillOpen = false ; // 
+let currentBillOpen = true;
 
-
-/* ─────────── NAVIGATION ─────────── */
 function openPage(type) {
- 
-   if (type === "current" && !currentBillOpen) {
+  if (type === "current" && !currentBillOpen) {
     showNoticeModal();
     return;
   }
-  
-   mode = type;
+  mode = type;
   document.getElementById("menu").style.display = "none";
   document.getElementById("searchPage").style.display = "block";
   document.getElementById("searchInput").value = "";
 
   const isCurrent = type === "current";
-  document.getElementById("pageTitle").textContent = isCurrent ? "ယခုလ မီတာဘေ" : "ယခင်လ မီတာဘေ";
+  document.getElementById("pageTitle").textContent = isCurrent ? "ယခုလ မီတာဘေလ်" : "ယခင်လ မီတာဘေလ်";
   document.getElementById("pageIcon").className = "page-header-icon " + (isCurrent ? "blue" : "amber");
   document.getElementById("pageIcon").innerHTML = `<i class="fa-solid ${isCurrent ? 'fa-calendar-check' : 'fa-clock-rotate-left'}" style="color:#fff"></i>`;
   document.getElementById("searchBtn").className = "btn " + (isCurrent ? "" : "amber");
@@ -740,7 +464,6 @@ function closeResult() {
 
 function showNoticeModal() {
   const result = document.getElementById("result");
-
   result.innerHTML = `
     <div style="text-align:center;padding:16px 8px 8px">
       <div style="
@@ -755,8 +478,7 @@ function showNoticeModal() {
         အသိပေးချက်
       </div>
       <div style="
-        font-size:14px;line-height:1.9;
-        color:var(--text-muted);
+        font-size:14px;line-height:1.9;color:var(--text-muted);
         background:rgba(239,68,68,0.07);
         border:1px solid rgba(239,68,68,0.15);
         border-radius:12px;padding:14px 16px;margin-bottom:20px;
@@ -767,26 +489,23 @@ function showNoticeModal() {
         padding:12px 36px;border:none;border-radius:12px;
         background:linear-gradient(135deg,#ef4444,#b91c1c);
         color:#fff;font-family:inherit;font-size:14px;font-weight:700;
-        cursor:pointer;box-shadow:0 4px 16px rgba(239,68,68,0.3);
-        transition:all 0.2s;
+        cursor:pointer;box-shadow:0 4px 16px rgba(239,68,68,0.3);transition:all 0.2s;
       "
-      onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(239,68,68,0.4)'"
-      onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(239,68,68,0.3)'"
+      onmouseover="this.style.transform='translateY(-2px)'"
+      onmouseout="this.style.transform=''"
       >ပိတ်ရန်</button>
     </div>`;
-
   document.getElementById("overlay").classList.add("show");
 }
 
-/* ─────────── HELPERS ─────────── */
-function fmt(val, isMoney = false) {
+function fmt(val, isMoney = false, currency = "฿") {
   if (val === null || val === undefined || val === "" || val === false) return null;
-  if (isMoney && !isNaN(val)) return Number(val).toLocaleString() + " ฿";
+  if (isMoney && !isNaN(val)) return Number(val).toLocaleString() + " " + currency;
   return String(val);
 }
 
-function row(label, value, isMoney = false) {
-  const v = fmt(value, isMoney);
+function row(label, value, isMoney = false, currency = "฿") {
+  const v = fmt(value, isMoney, currency);
   if (v === null) return "";
   return `<div class="row">
     <span class="row-key">${label}</span>
@@ -805,13 +524,10 @@ function section(dotClass, label, rows) {
   </div>`;
 }
 
-/* ─────────── SEARCH ─────────── */
 async function searchData() {
-  const input = document.getElementById("searchInput").value.trim();
-  if (!input) {
-    document.getElementById("searchInput").focus();
-    return;
-  }
+const input = document.getElementById("searchInput").value.trim();
+if (!input) { document.getElementById("searchInput").focus(); return; }
+const currency = input.startsWith("15") ? "ကျပ်" : "฿";
 
   const overlay = document.getElementById("overlay");
   const result  = document.getElementById("result");
@@ -820,7 +536,7 @@ async function searchData() {
   result.innerHTML = `
     <div class="loader-wrap">
       <div class="loader"></div>
-      <div class="loader-text">ရှာဖွေနေပါသည်...ခတ္တစောင့်ဆိုင်းပေးပါ</div>
+      <div class="loader-text">ရှာဖွေနေပါသည်...ခေတ္တစောင့်ဆိုင်းပေးပါ</div>
     </div>`;
 
   const API = mode === "current" ? API_CURRENT : API_PREVIOUS;
@@ -833,20 +549,18 @@ async function searchData() {
       result.innerHTML = `
         <div class="empty-wrap">
           <div class="empty-icon"><i class="fa-solid fa-circle-xmark"></i></div>
-          <div class="empty-text">မတွေ့ပါ</div>
+          <div class="empty-text">လူကြီးမင်း မီတာအားရှာမတွေ့ပါ။ ရုံးသို့ ဆက်သွယ်စုံစမ်းနိုင်ပါသည်။</div>
         </div>`;
       return;
     }
 
     const x = data[0];
-
     const totalAmt =
-      Number(x.tax_5      || 0) +
-      Number(x.service_fee|| 0) +
-      Number(x.debt       || 0) +
-      Number(x.total      || 0);
+      Number(x.tax_5       || 0) +
+      Number(x.service_fee || 0) +
+      Number(x.debt        || 0) +
+      Number(x.total       || 0);
 
-    /* Info section */
     const infoRows = [
       row("ကုဒ်",    x.code),
       row("လိုင်း", x.line),
@@ -854,25 +568,22 @@ async function searchData() {
       row("လိပ်စာ", x.address),
     ].join("");
 
-    /* Unit section */
     const unitRows = [
-      row("ယခုယူနစ်",             x.current_unit),
-      row("ယခင်ယူနစ်",            x.previous_unit),
-      row("မြှောက်ကိန်း",          x.multiplier),
-      row("သုံးစွဲယူနစ်",          x.used_unit),
-      row("ယူနစ်နှုန်း",           x.unit_price,  true),
+      row("ယခုယူနစ်",                x.current_unit),
+      row("ယခင်ယူနစ်",               x.previous_unit),
+      row("မြှောက်ကိန်း",             x.multiplier),
+      row("သုံးစွဲယူနစ်",             x.used_unit),
+      row("ယူနစ်နှုန်း",              x.unit_price, true, currency),
       row("မီတာအဟောင်း သုံးစွဲယူနစ်", x.meter_change),
     ].join("");
 
-    /* Bill section */
     const billRows = [
-      row("Tr 5%",        x.tax_5,       true),
-      row("ဝန်ဆောင်ခ",   x.service_fee, true),
-      row("ကြွေးကျန်",   x.debt,        true),
-      row("ယူနစ်ဖိုး ",   x.total,       true),
+      row("Tr 5%",      x.tax_5,       true, currency),
+      row("ဝန်ဆောင်ခ", x.service_fee, true, currency),
+      row("ကြွေးကျန်", x.debt,        true, currency),
+      row("ယူနစ်ဖိုး",  x.total,       true, currency),
     ].join("");
 
-    
     let statusHtml = "";
     if (mode === "current") {
       if (x.payment_date && x.payment_date !== "False") {
@@ -891,18 +602,31 @@ async function searchData() {
     }
 
     result.innerHTML = `
-      <div class="result-title">
-        <i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:8px"></i>
-        မီတာဘေ အချက်အလက်
+      <div id="billContent">
+<div class="result-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+  <span>
+    <i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:8px"></i>
+    TTEC မီတာဘေလ် အချက်အလက်
+  </span>
+  <span style="font-size:11px;font-weight:500;color:var(--text-muted);white-space:nowrap;padding-top:3px;">
+    ${new Date().toLocaleString('en-GB', {
+      year:'numeric', month:'short', day:'numeric',
+      hour:'2-digit', minute:'2-digit'
+    })}
+  </span>
+</div>
+        ${section("dot-blue",   "အချက်အလက်",     infoRows)}
+        ${section("dot-purple", "ယူနစ်",          unitRows)}
+        ${section("dot-amber",  "ငွေတွက်ချက်မှု", billRows)}
+        <div class="total-card">
+          <div class="total-label">စုစုပေါင်း ကျသင့်ငွေ</div>
+          <div class="total-amount">${totalAmt.toLocaleString()} ${currency}</div>
+        </div>
+        ${statusHtml}
       </div>
-      ${section("dot-blue",   "အချက်အလက်",     infoRows)}
-      ${section("dot-purple", "ယူနစ်",          unitRows)}
-      ${section("dot-amber",  "ငွေတွက်ချက်မှု", billRows)}
-      <div class="total-card">
-        <div class="total-label">စုစုပေါင်း ကျသင့်ငွေ</div>
-        <div class="total-amount">${totalAmt.toLocaleString()} ฿</div>
-      </div>
-      ${statusHtml}
+      <button class="save-btn" id="saveBtn" onclick="saveAsImage()">
+        <i class="fa-solid fa-download"></i> သိမ်းဆည်းမည် (Save)
+      </button>
     `;
 
   } catch (e) {
@@ -914,21 +638,41 @@ async function searchData() {
   }
 }
 
-/* ─────────── IFRAME RESIZE ─────────── */
+async function saveAsImage() {
+  const saveBtn = document.getElementById("saveBtn");
+  const billContent = document.getElementById("billContent");
+
+  if (!billContent) return;
+
+  
+  saveBtn.style.display = "none";
+
+  try {
+    const canvas = await html2canvas(billContent, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      logging: false
+    });
+
+    const link = document.createElement("a");
+    const code = document.getElementById("searchInput").value.trim();
+    link.download = `TTEC Meter-Bill-${code}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (e) {
+    alert("ပုံသိမ်း၍ မရပါ။ ထပ်ကြိုးစားပါ။");
+  }
+
+ 
+  saveBtn.style.display = "flex";
+}
+
 function sendHeight() {
   parent.postMessage({ type: "resize", height: document.body.scrollHeight }, "*");
 }
 window.onload  = sendHeight;
 window.onresize = sendHeight;
 </script>
-</script>
-
-<style>
-@keyframes ringPulse {
-  0%,100% { box-shadow: 0 0 0 8px rgba(239,68,68,0.06), 0 0 0 16px rgba(239,68,68,0.03); }
-  50%      { box-shadow: 0 0 0 12px rgba(239,68,68,0.1), 0 0 0 22px rgba(239,68,68,0.05); }
-}
-</style>
-
 </body>
 </html>
