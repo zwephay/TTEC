@@ -78,7 +78,6 @@
 
   main{max-width:640px;margin:0 auto;padding-bottom:50px;}
 
-  /* ---------- User Home (pending-by-line) ---------- */
   .totalbanner{
     margin:16px 14px 6px;background:var(--ink);color:var(--paper-2);border-radius:12px;
     padding:18px 18px;display:flex;justify-content:space-between;align-items:center;
@@ -102,7 +101,7 @@
     border-radius:10px;color:var(--ink);font-size:14px;cursor:pointer;font-weight:600;
   }
 
-  /* ---------- List screen ---------- */
+
   .searchwrap{margin-top:14px;}
   .searchwrap input{
     width:100%;padding:11px 14px;border-radius:8px;border:none;
@@ -151,7 +150,7 @@
   .savenote{font-size:11px;color:#5C6B62;margin-top:8px;}
   .empty, .loading{padding:40px 20px;text-align:center;color:#5C6B62;font-size:13px;}
 
-  /* ---------- Admin dashboard ---------- */
+
   .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 14px 4px;}
   .statcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center;}
   .statcard .n{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;}
@@ -191,11 +190,10 @@
 </head>
 <body>
 
-<!-- ================= LOGIN ================= -->
 <div id="loginScreen">
   <div class="idcard">
-    <div class="eyebrow">TCL · လျှပ်စစ်ဓာတ်အားသုံးစွဲသူ</div>
-    <h1>မီတာဖတ်ချက်<br>ဝင်ရောက်စနစ်</h1>
+    <div class="eyebrow">TTEC · မီတာဖတ်ချက်ပြန်လည်စစ်ဆေးခြင်း</div>
+    <h1>မီတာဖတ်ချက်<br>ပြန်လည်စစ်ဆေးထည့်သွင်းရန်</h1>
     <div class="field">
       <label>Username</label>
       <input type="text" id="loginUser" autocomplete="username" placeholder="user1">
@@ -206,16 +204,15 @@
     </div>
     <button class="btn" id="loginBtn" onclick="doLogin()">ဝင်မည်</button>
     <div class="errmsg" id="loginErr"></div>
-    <div class="cfgnote">ဒီ app ကို ပထမဆုံးသုံးမယ်ဆိုရင် အောက်ခြေက Apps Script URL ကို config လုပ်ဖို့ လိုပါမယ်။</div>
+    <div class="cfgnote"></div>
   </div>
 </div>
 
-<!-- ================= USER HOME (pending by line) ================= -->
 <div id="userHomeScreen" class="hidden">
   <header class="top">
     <div class="row1">
       <div>
-        <div class="eyebrow">TCL · မီတာဖတ်ချက်</div>
+        <div class="eyebrow">TTEC · မီတာဖတ်ချက်</div>
         <h2>ဖတ်ချက်ကျန် လိုင်းများ</h2>
       </div>
       <div class="userchip">
@@ -241,7 +238,7 @@
   </main>
 </div>
 
-<!-- ================= LIST / READING ENTRY ================= -->
+
 <div id="listScreen" class="hidden">
   <header class="top">
     <div class="backrow" id="listBackRow">
@@ -275,7 +272,6 @@
   </main>
 </div>
 
-<!-- ================= ADMIN DASHBOARD ================= -->
 <div id="adminScreen" class="hidden">
   <header class="top">
     <div class="row1">
@@ -304,7 +300,7 @@
     <div class="viewall" style="margin:0 14px;" onclick="openList(null)">မှတ်တမ်းစာရင်း အသေးစိတ် ကြည့်ရန်</div>
 
     <div class="panelbox">
-      <h3>လိုင်းအလိုက် အခြေအနေ (User)</h3>
+      <h3>လိုင်းနံပတ်အလိုက် အခြေအနေ (User)</h3>
       <table class="dtable">
         <thead><tr><th>လိုင်း</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLine2Table"><tr><td colspan="4">Loading…</td></tr></tbody>
@@ -312,7 +308,7 @@
     </div>
 
     <div class="panelbox">
-      <h3>အုပ်စုအလိုက် အခြေအနေ (Admin Group)</h3>
+      <h3>လိုင်းအုပ်စုအလိုက် အခြေအနေ</h3>
       <table class="dtable">
         <thead><tr><th>အုပ်စု</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLineTable"><tr><td colspan="4">Loading…</td></tr></tbody>
@@ -320,7 +316,7 @@
     </div>
 
     <div class="panelbox">
-      <h3>User အလိုက် ထည့်သွင်းမှု</h3>
+      <h3>မီတာဖတ်ချက်ထည့်သွင်းသူအလိုက် ဖတ်ချက်ထည့်သွင်းမှု</h3>
       <table class="dtable">
         <thead><tr><th>Username</th><th>ထည့်သွင်းခဲ့သည့် အရေအတွက်</th></tr></thead>
         <tbody id="adminUserTable"><tr><td colspan="2">Loading…</td></tr></tbody>
@@ -328,35 +324,28 @@
     </div>
 
     <div class="panelbox">
-      <h3>လတ်တလော မှတ်တမ်း (နောက်ဆုံး ၂၀)</h3>
+      <h3>ဖတ်ချက်ထည့်သွင်းခဲ့မှု မှတ်တမ်း (နောက်ဆုံး ၂၀)</h3>
       <table class="dtable">
         <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>User</th></tr></thead>
         <tbody id="adminRecentTable"><tr><td colspan="5">Loading…</td></tr></tbody>
       </table>
     </div>
 
-    <div class="cycleaction">
-      <p><b>စက်ဝန်းအသစ် စတင်ခြင်း</b> — ဒီခလုတ်ကို နှိပ်လိုက်ရင် customer အားလုံးရဲ့ status ကို "ကျန်သည်" အဖြစ် ပြန်ပြောင်းပေးမှာဖြစ်ပြီး User တွေက ဒီလစဥ်အတွက် ဖတ်ချက်အသစ် ပြန်ရိုက်ထည့်နိုင်ပါမယ်။ (ယခင် history မှတ်တမ်းများ မပျက်ပါ)</p>
-      <button class="btn" onclick="startNewCycle()">စက်ဝန်းအသစ် စတင်မည်</button>
-    </div>
+
   </main>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* =====================================================
-   CONFIG — Apps Script ကို deploy လုပ်ပြီးရင် ရလာမယ့်
-   Web App URL ကို ဒီနေရာမှာ ထည့်ပါ
-   ===================================================== */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1eTFMM9_97Iolnu6FmrB3j5qYxa8MjoLMCEUFAt7zqZ-jXXPGpXZ6BORPHxIgONtv/exec";
 
-let session = null;       // { username, displayName, role }
-let records = [];         // Master data cache
+let session = null;       
+let records = [];         
 let openPanelCode = null;
 let currentFilter = 'all';
-let currentLineFilter = null; // when opened from a line card
-let cameFrom = 'userHome';    // for back navigation on list screen
+let currentLineFilter = null; 
+let cameFrom = 'userHome';    
 
 function toast(msg, isErr){
   const t = document.getElementById('toast');
@@ -370,7 +359,6 @@ function show(id){
   });
 }
 
-/* ---------------- Auth ---------------- */
 
 async function doLogin(){
   const u = document.getElementById('loginUser').value.trim();
@@ -379,7 +367,7 @@ async function doLogin(){
   errEl.textContent = '';
 
   if(SCRIPT_URL.indexOf('PASTE_YOUR') === 0){
-    errEl.textContent = 'Apps Script URL ကို ဦးစွာ config လုပ်ပေးပါ (script အပေါ်ဆုံး CONFIG ကဏ္ဍ)';
+    errEl.textContent = 'Apps Script URL ကို ဦးစွာ config လုပ်ပေးပါ ';
     return;
   }
   if(!u || !p){ errEl.textContent = 'Username နှင့် Password နှစ်ခုလုံး ထည့်ပါ'; return; }
@@ -417,8 +405,6 @@ function doLogout(){
   show('loginScreen');
 }
 
-/* ---------------- User home (pending by line) ---------------- */
-
 async function loadData(){
   const gridEl = document.getElementById('lineGrid');
   if(gridEl) gridEl.innerHTML = '<div class="loading">Loading…</div>';
@@ -433,7 +419,7 @@ async function loadData(){
       if(gridEl) gridEl.innerHTML = `<div class="empty">Data ရယူ၍ မရပါ — ${data.message||''}</div>`;
     }
   } catch(e){
-    if(gridEl) gridEl.innerHTML = '<div class="empty">ချိတ်ဆက်မှု အမှား — Apps Script URL ကို ပြန်စစ်ပါ</div>';
+    if(gridEl) gridEl.innerHTML = '<div class="empty">ချိတ်ဆက်မှု URL ကို ပြန်စစ်ပါ</div>';
   }
 }
 
@@ -489,7 +475,7 @@ function backFromList(){
   else { show('userHomeScreen'); renderUserHome(); }
 }
 
-/* ---------------- List / reading entry ---------------- */
+
 
 function setFilter(f){
   currentFilter = f;
@@ -552,7 +538,7 @@ function renderList(){
           <button class="btn secondary" onclick="togglePanel('${escapeAttr(r.code)}')">မလုပ်တော့ပါ</button>
           <button class="btn" onclick="saveReading('${escapeAttr(r.code)}')">သိမ်းမည်</button>
         </div>
-        <div class="savenote">Save လုပ်ရင် history မှတ်တမ်းအဖြစ် အသစ်ထည့်ပြီး status ကို "ဖတ်ပြီး" အဖြစ် ပြောင်းပေးပါမယ်</div>
+      
       </div>
     </div>`;
   }).join('');
@@ -579,7 +565,7 @@ async function saveReading(code){
   try{
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
       body: JSON.stringify({
         action: 'saveReading',
         code: rec.code, lineNo: rec.lineNo, lineNo2: rec.lineNo2, name: rec.name, address: rec.address,
@@ -602,7 +588,6 @@ async function saveReading(code){
   }
 }
 
-/* ---------------- Admin dashboard ---------------- */
 
 async function loadAdminStats(){
   ['adminLineTable','adminLine2Table','adminUserTable','adminRecentTable'].forEach(id=>{
@@ -657,27 +642,7 @@ async function loadAdminStats(){
   }
 }
 
-async function startNewCycle(){
-  if(!confirm('Customer အားလုံးရဲ့ status ကို "ကျန်သည်" အဖြစ် ပြန်ပြောင်းမှာ သေချာပါသလား?')) return;
-  try{
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'startNewCycle', username: session.username })
-    });
-    const data = await res.json();
-    if(data.success){
-      toast('စက်ဝန်းအသစ် စတင်ပြီးပါပြီ');
-      loadAdminStats();
-    } else {
-      toast(data.message || 'မအောင်မြင်ပါ', true);
-    }
-  } catch(e){
-    toast('ချိတ်ဆက်မှု အမှား', true);
-  }
-}
 
-/* ---------------- Utils ---------------- */
 
 function escapeHtml(s){
   return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
