@@ -304,9 +304,17 @@
     <div class="viewall" style="margin:0 14px;" onclick="openList(null)">မှတ်တမ်းစာရင်း အသေးစိတ် ကြည့်ရန်</div>
 
     <div class="panelbox">
-      <h3>လိုင်းအလိုက် အခြေအနေ</h3>
+      <h3>လိုင်းအလိုက် အခြေအနေ (User)</h3>
       <table class="dtable">
         <thead><tr><th>လိုင်း</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
+        <tbody id="adminLine2Table"><tr><td colspan="4">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="panelbox">
+      <h3>အုပ်စုအလိုက် အခြေအနေ (Admin Group)</h3>
+      <table class="dtable">
+        <thead><tr><th>အုပ်စု</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLineTable"><tr><td colspan="4">Loading…</td></tr></tbody>
       </table>
     </div>
@@ -437,7 +445,7 @@ function renderUserHome(){
 
   const perLine = {};
   records.forEach(r=>{
-    const ln = r.lineNo || 'အမည်မသိ';
+    const ln = r.lineNo2 || 'အမည်မသိ';
     if(!perLine[ln]) perLine[ln] = { total:0, pending:0 };
     perLine[ln].total++;
     if(r.status !== 'Read') perLine[ln].pending++;
@@ -495,11 +503,11 @@ function renderList(){
   const q = document.getElementById('searchBox').value.trim().toLowerCase();
 
   let filtered = records.filter(r=>{
-    if(currentLineFilter && String(r.lineNo) !== String(currentLineFilter)) return false;
+    if(currentLineFilter && String(r.lineNo2) !== String(currentLineFilter)) return false;
     if(currentFilter === 'pending' && r.status === 'Read') return false;
     if(currentFilter === 'read' && r.status !== 'Read') return false;
     if(!q) return true;
-    return [r.code, r.name, r.address, r.meterNo, r.lineNo].some(v=>
+    return [r.code, r.name, r.address, r.meterNo, r.lineNo, r.lineNo2].some(v=>
       String(v||'').toLowerCase().includes(q)
     );
   });
@@ -512,7 +520,7 @@ function renderList(){
   }
 
   listEl.innerHTML = filtered.map(r=>{
-    const isOpen = openPanelCode === r.code;
+    const isOpen = String(openPanelCode) === String(r.code);
     const isRead = r.status === 'Read';
     const lastDate = r.lastReadingDate ? new Date(r.lastReadingDate).toLocaleDateString('my-MM') : '—';
     return `
@@ -526,7 +534,8 @@ function renderList(){
         <span class="statustag ${isRead?'read':'pending'}">${isRead?'ဖတ်ပြီး':'ကျန်သည်'}</span>
       </div>
       <div class="meta2">
-        <span>လိုင်း <b>${escapeHtml(r.lineNo)}</b></span>
+        <span>လိုင်း <b>${escapeHtml(r.lineNo2)}</b></span>
+        <span>အုပ်စု <b>${escapeHtml(r.lineNo)}</b></span>
         <span>မီတာနံပါတ် <b>${escapeHtml(r.meterNo)}</b></span>
       </div>
       <div class="meta2">
@@ -550,7 +559,7 @@ function renderList(){
 }
 
 function togglePanel(code){
-  openPanelCode = (openPanelCode === code) ? null : code;
+  openPanelCode = (String(openPanelCode) === String(code)) ? null : String(code);
   renderList();
   if(openPanelCode){
     setTimeout(()=>{
@@ -564,7 +573,7 @@ async function saveReading(code){
   const inputEl = document.getElementById(`input-${cssSafe(code)}`);
   const val = inputEl ? inputEl.value.trim() : '';
   if(!val){ toast('ဖတ်ချက် ရိုက်ထည့်ပါ', true); return; }
-  const rec = records.find(r=>r.code === code);
+  const rec = records.find(r=>String(r.code) === String(code));
   if(!rec) return;
 
   try{
@@ -573,7 +582,7 @@ async function saveReading(code){
       headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
       body: JSON.stringify({
         action: 'saveReading',
-        code: rec.code, lineNo: rec.lineNo, name: rec.name, address: rec.address,
+        code: rec.code, lineNo: rec.lineNo, lineNo2: rec.lineNo2, name: rec.name, address: rec.address,
         meterNo: rec.meterNo, reading: val, enteredBy: session ? session.username : ''
       })
     });
@@ -596,7 +605,7 @@ async function saveReading(code){
 /* ---------------- Admin dashboard ---------------- */
 
 async function loadAdminStats(){
-  ['adminLineTable','adminUserTable','adminRecentTable'].forEach(id=>{
+  ['adminLineTable','adminLine2Table','adminUserTable','adminRecentTable'].forEach(id=>{
     document.getElementById(id).innerHTML = '<tr><td>Loading…</td></tr>';
   });
   try{
@@ -612,6 +621,14 @@ async function loadAdminStats(){
     document.getElementById('stFill').style.width = pct + '%';
 
     document.getElementById('adminLineTable').innerHTML = data.perLine.length ? data.perLine.map(l=>`
+      <tr>
+        <td>${escapeHtml(l.lineNo)}</td>
+        <td class="minitag">${l.total}</td>
+        <td class="minitag" style="color:var(--green);">${l.read}</td>
+        <td class="minitag" style="color:var(--red);">${l.pending}</td>
+      </tr>`).join('') : '<tr><td colspan="4">Data မရှိသေးပါ</td></tr>';
+
+    document.getElementById('adminLine2Table').innerHTML = data.perLine2.length ? data.perLine2.map(l=>`
       <tr>
         <td>${escapeHtml(l.lineNo)}</td>
         <td class="minitag">${l.total}</td>
