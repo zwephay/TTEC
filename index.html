@@ -2,677 +2,671 @@
 <html lang="my">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>မီတာခ ကျသင့်ငွေ စစ်ဆေးရန်</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCL — မီတာဖတ်ချက် စနစ်</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --primary:#2563eb;
-  --primary-dark:#1e40af;
-  --primary-glow:rgba(37,99,235,.15);
-  --accent:#f59e0b;
-  --success:#16a34a;
-  --danger:#dc2626;
-  --bg:#eef2f7;
-  --surface:rgba(255,255,255,.92);
-  --surface-2:#ffffff;
-  --surface-3:#f8fafc;
-  --border:#e2e8f0;
-  --text:#0f172a;
-  --text-muted:#64748b;
-  --text-dim:#94a3b8;
-}
+  :root{
+    --ink:#132A2E;
+    --paper:#E9EBE4;
+    --paper-2:#F5F6F1;
+    --brass:#C8862B;
+    --brass-light:#E3A64B;
+    --green:#4C7A5E;
+    --green-bg:#E7F0EA;
+    --red:#B5453A;
+    --red-bg:#F7E9E7;
+    --line:#CBD0C6;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Noto Sans Myanmar','IBM Plex Mono',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  button{font-family:inherit;}
+  .hidden{display:none !important;}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  /* ---------- Login ---------- */
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .idcard{
+    width:100%;max-width:360px;background:var(--ink);color:var(--paper-2);
+    border-radius:14px;padding:28px 24px 24px;position:relative;overflow:hidden;
+    box-shadow:0 20px 40px -12px rgba(19,42,46,0.5);
+  }
+  .idcard::before{
+    content:"";position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+    border-radius:50%;background:radial-gradient(circle,rgba(227,166,75,0.25),transparent 70%);
+  }
+  .idcard .eyebrow{font-family:'IBM Plex Mono',monospace;letter-spacing:.14em;font-size:11px;color:var(--brass-light);text-transform:uppercase;}
+  .idcard h1{margin:6px 0 22px;font-size:22px;font-weight:700;line-height:1.3;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;color:#B9C2BC;margin-bottom:6px;}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);
+    background:rgba(255,255,255,0.06);color:#fff;font-size:15px;font-family:inherit;
+  }
+  .field input:focus{outline:2px solid var(--brass-light);outline-offset:1px;}
+  .btn{
+    width:100%;padding:13px;border-radius:8px;border:none;background:var(--brass);
+    color:#1A1200;font-weight:700;font-size:15px;cursor:pointer;
+  }
+  .btn:active{background:var(--brass-light);}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .errmsg{color:#F0A79C;font-size:13px;margin-top:10px;min-height:16px;}
+  .cfgnote{margin-top:16px;font-size:11px;color:#8FA098;line-height:1.5;}
 
-html, body {
-  height: 100%;
-  overflow: auto;
-  font-family: 'Noto Sans Myanmar', sans-serif;
-  background: linear-gradient(135deg,#eef2f7,#e2e8f0);
-  color: var(--text);
-}
+  /* ---------- Shared header ---------- */
+  header.top{background:var(--ink);color:var(--paper-2);padding:18px 18px 16px;position:sticky;top:0;z-index:10;}
+  header.top .row1{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  header.top .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--brass-light);text-transform:uppercase;}
+  header.top h2{margin:2px 0 0;font-size:18px;}
+  .userchip{font-size:12px;color:#B9C2BC;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .rolepill{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;
+    background:rgba(227,166,75,0.18);color:var(--brass-light);padding:2px 7px;border-radius:20px;
+  }
+  .iconbtn, .logout{
+    background:none;border:1px solid rgba(255,255,255,.2);color:#EDEFEA;border-radius:6px;
+    padding:6px 10px;font-size:12px;cursor:pointer;
+  }
+  .backrow{display:flex;align-items:center;gap:10px;margin-bottom:2px;}
+  .backbtn{background:none;border:none;color:var(--brass-light);font-size:13px;cursor:pointer;padding:0;font-family:inherit;}
 
-.bg-scene {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.bg-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(37,99,235,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-}
-.orb-1{
-  width:500px; height:500px; background:#93c5fd;
-  top:-150px; right:-100px;
-  animation:orbFloat 12s ease-in-out infinite;
-}
-.orb-2{
-  width:350px; height:350px; background:#bfdbfe;
-  bottom:-80px; left:-80px;
-  animation:orbFloat 16s ease-in-out infinite reverse;
-}
-.orb-3{
-  width:200px; height:200px; background:#fde68a;
-  top:40%; left:50%;
-  transform:translate(-50%,-50%);
-  animation:orbPulse 8s ease-in-out infinite;
-  opacity:.18;
-}
+  main{max-width:640px;margin:0 auto;padding-bottom:50px;}
 
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(20px, -30px); }
-}
-@keyframes orbPulse {
-  0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.1; }
-  50% { transform: translate(-50%,-50%) scale(1.3); opacity: 0.2; }
-}
+  /* ---------- User Home (pending-by-line) ---------- */
+  .totalbanner{
+    margin:16px 14px 6px;background:var(--ink);color:var(--paper-2);border-radius:12px;
+    padding:18px 18px;display:flex;justify-content:space-between;align-items:center;
+  }
+  .totalbanner .num{font-family:'IBM Plex Mono',monospace;font-size:34px;font-weight:700;color:var(--brass-light);line-height:1;}
+  .totalbanner .lbl{font-size:12px;color:#B9C2BC;margin-top:4px;}
+  .sectionlbl{padding:16px 18px 8px;font-size:12px;color:#5C6B62;letter-spacing:.04em;}
+  .linegrid{padding:0 14px;display:flex;flex-direction:column;gap:8px;}
+  .linecard{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+  }
+  .linecard:active{background:var(--paper-2);}
+  .linecard .lname{font-size:15px;font-weight:600;}
+  .linecard .lsub{font-size:12px;color:#5C6B62;margin-top:2px;}
+  .linecard .lcount{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--red);}
+  .linecard.done .lcount{color:var(--green);}
+  .linecard.done{opacity:.6;}
+  .viewall{
+    margin:16px 14px 0;padding:13px;text-align:center;border:1px dashed var(--line);
+    border-radius:10px;color:var(--ink);font-size:14px;cursor:pointer;font-weight:600;
+  }
 
-.wrapper{
-  position:relative; z-index:1; min-height:100vh;
-  padding:20px 16px; display:flex; flex-direction:column;
-  align-items:center; overflow:auto;
-}
+  /* ---------- List screen ---------- */
+  .searchwrap{margin-top:14px;}
+  .searchwrap input{
+    width:100%;padding:11px 14px;border-radius:8px;border:none;
+    background:rgba(255,255,255,0.1);color:#fff;font-size:14px;font-family:inherit;
+  }
+  .searchwrap input::placeholder{color:#93A19B;}
+  .filterrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .chip{
+    font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.25);
+    color:#D9DED8;cursor:pointer;background:none;
+  }
+  .chip.active{background:var(--brass);color:#1A1200;border-color:var(--brass);font-weight:600;}
 
-.card{
-  width:100%; max-width:440px;
-  overflow-y:auto; overflow-x:hidden;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.7);
-  border-radius:24px; padding:28px 24px;
-  box-shadow:0 20px 50px rgba(0,0,0,.08);
-  scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent;
-}
+  .listmeta{padding:14px 18px 6px;font-size:12px;color:#5C6B62;display:flex;justify-content:space-between;}
+  .list{padding:0 14px;display:flex;flex-direction:column;gap:10px;}
 
-.logo-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:28px; }
-.logo-icon {
-  width:64px; height:64px; border-radius:18px;
-  background:linear-gradient(135deg,#0ea5e9,#0369a1);
-  display:flex; align-items:center; justify-content:center;
-  font-size:26px; color:white;
-  box-shadow:0 8px 30px rgba(14,165,233,0.4);
-  margin-bottom:14px; position:relative; overflow:hidden;
-}
-.logo-icon::after {
-  content:''; position:absolute; top:0; left:0; right:0;
-  height:50%; background:rgba(255,255,255,0.12);
-  border-radius:18px 18px 0 0;
-}
-.logo-title { font-size:20px; font-weight:700; color:var(--text); letter-spacing:0.01em; }
-.divider {
-  width:60px; height:2px;
-  background:linear-gradient(90deg,transparent,var(--primary),transparent);
-  margin:14px auto 0;
-}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px;cursor:pointer;}
+  .card.isread{border-left:3px solid var(--green);}
+  .card.ispending{border-left:3px solid var(--red);}
+  .card .toprow{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .code{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);
+    border:1px solid var(--line);padding:3px 8px;border-radius:5px;color:var(--ink);white-space:nowrap;
+  }
+  .statustag{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;}
+  .statustag.read{background:var(--green-bg);color:var(--green);}
+  .statustag.pending{background:var(--red-bg);color:var(--red);}
+  .name{font-size:15px;font-weight:600;margin:6px 0 2px;}
+  .addr{font-size:13px;color:#5C6B62;}
+  .meta2{display:flex;gap:14px;margin-top:10px;font-size:12px;color:#5C6B62;flex-wrap:wrap;}
+  .meta2 b{color:var(--ink);font-weight:600;}
+  .lastread{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green);}
 
-.menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.menu-card{
-  background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px;
-  padding:20px 14px; cursor:pointer;
-  transition:all .3s cubic-bezier(.34,1.56,.64,1);
-  text-align:center; position:relative; overflow:hidden;
-}
-.menu-card::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  opacity:0; transition:opacity 0.3s;
-}
-.menu-card:hover { transform:translateY(-4px); border-color:var(--primary); box-shadow:0 12px 30px rgba(14,165,233,0.2); }
-.menu-card:hover::before { opacity:0.15; }
-.menu-card:active { transform:scale(0.97); }
-.menu-card-icon {
-  position:relative; width:44px; height:44px;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  border-radius:12px; display:flex; align-items:center; justify-content:center;
-  margin:0 auto 10px; font-size:18px;
-  box-shadow:0 4px 14px rgba(14,165,233,0.3);
-}
-.menu-card-icon.amber {
-  background:linear-gradient(135deg,#f59e0b,#d97706);
-  box-shadow:0 4px 14px rgba(245,158,11,0.3);
-}
-.menu-card-label { position:relative; font-size:13px; font-weight:600; color:var(--text); line-height:1.4; }
-.menu-card-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:99px; margin-top:6px; font-weight:600; }
-.badge-blue { background:rgba(14,165,233,0.15); color:var(--primary); }
-.badge-amber { background:rgba(245,158,11,0.15); color:var(--accent); }
+  .panel{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:none;}
+  .panel.open{display:block;}
+  .digitwrap{background:var(--ink);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .digitwrap label{font-size:11px;color:var(--brass-light);white-space:nowrap;}
+  .digitwrap input{
+    flex:1;background:transparent;border:none;font-family:'IBM Plex Mono',monospace;
+    font-size:22px;letter-spacing:.08em;color:var(--brass-light);text-align:right;font-weight:600;
+  }
+  .digitwrap input:focus{outline:none;}
+  .panelbtns{display:flex;gap:8px;}
+  .panelbtns .btn{padding:11px;font-size:14px;}
+  .btn.secondary{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:600;}
+  .savenote{font-size:11px;color:#5C6B62;margin-top:8px;}
+  .empty, .loading{padding:40px 20px;text-align:center;color:#5C6B62;font-size:13px;}
 
-.back-btn {
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:13px; color:var(--text-muted); cursor:pointer;
-  padding:6px 0; margin-bottom:20px; transition:color 0.2s;
-}
-.back-btn:hover { color:var(--primary); }
+  /* ---------- Admin dashboard ---------- */
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 14px 4px;}
+  .statcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center;}
+  .statcard .n{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;}
+  .statcard .l{font-size:11px;color:#5C6B62;margin-top:4px;}
+  .statcard.green .n{color:var(--green);}
+  .statcard.red .n{color:var(--red);}
 
-.page-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
-.page-header-icon {
-  width:46px; height:46px; border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:20px; flex-shrink:0;
-}
-.page-header-icon.blue { background:linear-gradient(135deg,#0ea5e9,#0369a1); box-shadow:0 4px 16px rgba(14,165,233,0.3); }
-.page-header-icon.amber { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 4px 16px rgba(245,158,11,0.3); }
-.page-header-text h2 { font-size:17px; font-weight:700; }
-.page-header-text p { font-size:12px; color:var(--text-muted); margin-top:3px; }
+  .progresswrap{margin:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;}
+  .progresswrap .plabel{display:flex;justify-content:space-between;font-size:12px;color:#5C6B62;margin-bottom:8px;}
+  .progressbar{height:10px;background:var(--paper);border-radius:20px;overflow:hidden;}
+  .progressbar .fill{height:100%;background:var(--brass);border-radius:20px;transition:width .4s ease;}
 
-.input-wrap { position:relative; margin-bottom:14px; }
-.input-icon {
-  position:absolute; left:14px; top:50%;
-  transform:translateY(-50%); color:var(--text-dim);
-  font-size:14px; pointer-events:none;
-}
-.input{
-  width:100%; padding:14px 14px 14px 42px;
-  background:#fff; border:1px solid #dbe4ee;
-  border-radius:14px; color:var(--text);
-  font-family:inherit; font-size:15px; transition:all .25s;
-}
-.input::placeholder { color:var(--text-dim); }
-.input:focus {
-  outline:none; border-color:var(--primary);
-  background:var(--surface-2); box-shadow:0 0 0 3px var(--primary-glow);
-}
+  .panelbox{margin:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .panelbox h3{margin:0;padding:14px 16px 10px;font-size:14px;border-bottom:1px solid var(--line);}
+  table.dtable{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.dtable th{
+    text-align:left;padding:8px 12px;color:#5C6B62;font-weight:600;font-size:11px;
+    border-bottom:1px solid var(--line);background:var(--paper-2);
+  }
+  table.dtable td{padding:9px 12px;border-bottom:1px solid #EDEFEA;}
+  table.dtable tr:last-child td{border-bottom:none;}
+  .minitag{font-family:'IBM Plex Mono',monospace;font-size:11px;}
 
-.btn {
-  width:100%; padding:15px; border:none; border-radius:14px;
-  background:linear-gradient(135deg,#0ea5e9,#0369a1);
-  color:#fff; font-family:inherit; font-size:15px; font-weight:700;
-  cursor:pointer; transition:all 0.25s;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  box-shadow:0 6px 24px rgba(14,165,233,0.3);
-  position:relative; overflow:hidden;
-}
-.btn::after {
-  content:''; position:absolute; top:0; left:0; right:0;
-  height:50%; background:rgba(255,255,255,0.08);
-}
-.btn:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(14,165,233,0.4); }
-.btn:active { transform:scale(0.98); }
-.btn.amber { background:linear-gradient(135deg,#f59e0b,#d97706); box-shadow:0 6px 24px rgba(245,158,11,0.3); }
-.btn.amber:hover { box-shadow:0 10px 30px rgba(245,158,11,0.4); }
+  .cycleaction{margin:14px;padding:16px;border:1px dashed var(--red);border-radius:10px;background:var(--red-bg);}
+  .cycleaction p{margin:0 0 10px;font-size:12.5px;color:var(--ink);line-height:1.5;}
+  .cycleaction .btn{background:var(--red);color:#fff;}
+  .cycleaction .btn:active{background:#9a3a30;}
 
-.overlay{
-  position:fixed; inset:0;
-  background:rgba(15,23,42,.35);
-  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  display:none; align-items:flex-end; justify-content:center;
-  z-index:100; padding:16px;
-}
-.overlay.show { display:flex; animation:fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-.modal{
-  position:relative; width:100%; max-width:500px; max-height:88vh;
-  overflow-y:auto; background:#ffffff; border:1px solid #e2e8f0;
-  border-radius:24px; padding:24px 20px 28px;
-  box-shadow:0 20px 60px rgba(0,0,0,.12);
-  animation:slideUp .35s cubic-bezier(.34,1.3,.64,1);
-  scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent;
-}
-@keyframes slideUp {
-  from { transform:translateY(40px); opacity:0; }
-  to { transform:translateY(0); opacity:1; }
-}
-
-.modal-handle {
-  width:40px; height:4px; background:var(--border);
-  border-radius:2px; margin:0 auto 20px;
-}
-
-.close-btn {
-  position:absolute; top:18px; right:18px;
-  width:36px; height:36px; border-radius:10px;
-  background:var(--surface-3); border:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:var(--text-muted); transition:all 0.25s; font-size:14px;
-}
-.close-btn:hover { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:var(--danger); transform:rotate(90deg); }
-
-.result-title { font-size:16px; font-weight:700; margin-bottom:16px; padding-right:40px; line-height:1.4; }
-
-.section{
-  background:#f8fafc; border:1px solid #e2e8f0;
-  border-radius:16px; padding:16px; margin-bottom:12px;
-}
-.section-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-.section-dot { width:8px; height:8px; border-radius:50%; }
-.dot-blue { background:var(--primary); box-shadow:0 0 6px var(--primary); }
-.dot-purple { background:#a855f7; box-shadow:0 0 6px #a855f7; }
-.dot-amber { background:var(--accent); box-shadow:0 0 6px var(--accent); }
-.section-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; }
-
-.row {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:9px 0; border-bottom:1px solid rgba(0,0,0,0.05); gap:12px;
-}
-.row:last-child { border-bottom:none; padding-bottom:0; }
-.row-key { font-size:13px; color:var(--text-muted); flex-shrink:0; }
-.row-val { font-size:14px; font-weight:600; color:var(--text); text-align:right; word-break:break-all; }
-.row-val.money { color:#1d4ed8; font-weight:700; }
-
-.total-card{
-  margin-top:14px; padding:18px 20px; border-radius:16px;
-  background:linear-gradient(135deg,#2563eb,#1e40af);
-  display:flex; justify-content:space-between; align-items:center;
-  box-shadow:0 8px 30px rgba(37,99,235,.25); position:relative;
-}
-.total-card::before {
-  content:''; position:absolute; top:0; left:0; right:0;
-  height:50%; background:rgba(255,255,255,0.08);
-  border-radius:16px 16px 0 0;
-}
-.total-label { position:relative; font-size:13px; font-weight:600; color:#fff; opacity:0.85; }
-.total-amount {
-  position:relative; font-size:22px; font-weight:800;
-  letter-spacing:-0.02em; color:#ffffff;
-  text-shadow:0 1px 3px rgba(0,0,0,.25);
-}
-
-.status-card {
-  margin-top:12px; padding:14px 18px; border-radius:14px;
-  display:flex; align-items:center; gap:12px; font-weight:600; font-size:14px;
-}
-.status-paid { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); color:#059669; }
-.status-unpaid { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#dc2626; }
-.status-icon {
-  width:36px; height:36px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:16px; flex-shrink:0;
-}
-.status-paid .status-icon { background:rgba(16,185,129,0.15); }
-.status-unpaid .status-icon { background:rgba(239,68,68,0.12); }
-
-.loader-wrap { padding:40px 20px; text-align:center; }
-.loader {
-  width:40px; height:40px;
-  border:3px solid rgba(14,165,233,0.1);
-  border-top-color:var(--primary); border-radius:50%;
-  margin:0 auto 16px; animation:spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-.loader-text { color:var(--text-muted); font-size:14px; }
-
-.empty-wrap { padding:40px 20px; text-align:center; color:var(--text-muted); }
-.empty-icon { font-size:40px; margin-bottom:12px; opacity:0.4; }
-.empty-text { font-size:15px; font-weight:600; color:var(--text-dim); }
-
-.save-btn {
-  margin-top:16px; width:100%; padding:14px; border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,#16a34a,#15803d);
-  color:#fff; font-family:inherit; font-size:15px; font-weight:700;
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  gap:8px; box-shadow:0 6px 20px rgba(22,163,74,0.3); transition:all 0.25s;
-}
-.save-btn:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(22,163,74,0.4); }
-.save-btn:active { transform:scale(0.98); }
-
-@media (max-width: 480px) {
-  .card { padding:22px 18px; }
-  .menu-grid { grid-template-columns:1fr 1fr; gap:10px; }
-  .logo-title { font-size:18px; }
-}
-
-@keyframes ringPulse {
-  0%,100% { box-shadow:0 0 0 8px rgba(239,68,68,0.06),0 0 0 16px rgba(239,68,68,0.03); }
-  50%      { box-shadow:0 0 0 12px rgba(239,68,68,0.1),0 0 0 22px rgba(239,68,68,0.05); }
-}
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:12px 18px;border-radius:8px;font-size:13px;box-shadow:0 10px 24px rgba(0,0,0,.25);
+    opacity:0;pointer-events:none;transition:opacity .25s ease, bottom .25s ease;z-index:50;
+  }
+  .toast.show{opacity:1;bottom:30px;}
+  .toast.err{background:var(--red);}
 </style>
 </head>
 <body>
 
-<div class="bg-scene">
-  <div class="bg-grid"></div>
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="bg-orb orb-3"></div>
-</div>
-
-<div class="wrapper">
-  <div style="width:100%;text-align:center;margin-bottom:30px;">
-    <div style="font-size:38px;font-weight:700;color:#111827;margin-bottom:18px;line-height:1.4;">
-      မီတာဘေလ်စစ်ဆေးရန်
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="idcard">
+    <div class="eyebrow">TCL · လျှပ်စစ်ဓာတ်အားသုံးစွဲသူ</div>
+    <h1>မီတာဖတ်ချက်<br>ဝင်ရောက်စနစ်</h1>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="loginUser" autocomplete="username" placeholder="user1">
     </div>
-    <div style="width:75%;height:10px;background:#15803d;margin:0 auto 45px auto;border-radius:3px;"></div>
-    <div style="color:#dc2626;font-size:14px;line-height:2;max-width:1000px;margin:0 auto;font-weight:500;">
-      ကျသင့်သည့် မီတာခများအား လစဉ် ( 10 မှ 25 ) ရက်နေ့အတွင်း
-      လာရောက်ပေးဆောင်ရမည်ဖြစ်ပါသည်။
-      <br>
-      မီတာခပေးဆောင်ရန် လစဉ် (၂၅) ရက်နေ့ထက်နောက်ကျပါက
-      ရက်လွန်ကြေး ဘတ် (၂၀၀) ထပ်ဆောင်းပေးဆောင်ရပါမည်။
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" autocomplete="current-password" placeholder="••••••••">
     </div>
-  </div>
-
-  <div class="card" id="menu">
-    <div class="logo-wrap">
-      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-      <div class="logo-title">မီတာခ ကျသင့်ငွေ စစ်ဆေးရန်</div>
-      <div class="divider"></div>
-    </div>
-    <div class="menu-grid">
-      <div class="menu-card" onclick="openPage('current')">
-        <div class="menu-card-icon">
-          <i class="fa-solid fa-calendar-check" style="color:#fff"></i>
-        </div>
-        <div class="menu-card-label">ယခုလ<br>မီတာဘေလ်</div>
-        <div class="menu-card-badge badge-blue">Current</div>
-      </div>
-      <div class="menu-card" onclick="openPage('previous')">
-        <div class="menu-card-icon amber">
-          <i class="fa-solid fa-clock-rotate-left" style="color:#fff"></i>
-        </div>
-        <div class="menu-card-label">ယခင်လ<br>မီတာဘေလ်</div>
-        <div class="menu-card-badge badge-amber">Previous</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" id="searchPage" style="display:none">
-    <div class="back-btn" onclick="goBack()">
-      <i class="fa-solid fa-arrow-left"></i> နောက်သို့
-    </div>
-    <div class="page-header" id="pageHeader">
-      <div class="page-header-icon blue" id="pageIcon">
-        <i class="fa-solid fa-calendar-check" style="color:#fff"></i>
-      </div>
-      <div class="page-header-text">
-        <h2 id="pageTitle"></h2>
-        <p>မီတာကုဒ် ထည့်၍ ရှာဖွေပါ</p>
-      </div>
-    </div>
-    <div class="input-wrap">
-      <span class="input-icon"><i class="fa-solid fa-hashtag"></i></span>
-      <input id="searchInput" class="input" placeholder="မီတာကုဒ် ထည့်ပါ..."
-        onkeydown="if(event.key==='Enter') searchData()">
-    </div>
-    <button class="btn" id="searchBtn" onclick="searchData()">
-      <i class="fa-solid fa-magnifying-glass"></i> ရှာဖွေမည်
-    </button>
-    <div style="
-      margin-top:14px; padding:13px 16px;
-      background:rgba(37,99,235,0.06);
-      border:1px solid rgba(37,99,235,0.15);
-      border-radius:12px; font-size:13px;
-      color:var(--text-muted); line-height:1.8;
-    ">
-      <i class="fa-solid fa-circle-info" style="color:var(--primary);margin-right:6px"></i>
-      <strong style="color:var(--text)">လမ်းညွှန်</strong> — မီတာဘေလ်ဆောင်စဉ် ယူဆောင်လာသော ကတ်ပြားမှာ
-      <strong style="color:var(--primary)">Code ၆ လုံး</strong> အား ရိုက်ထည့်ပေးပါ။
-    </div>
+    <button class="btn" id="loginBtn" onclick="doLogin()">ဝင်မည်</button>
+    <div class="errmsg" id="loginErr"></div>
+    <div class="cfgnote">ဒီ app ကို ပထမဆုံးသုံးမယ်ဆိုရင် အောက်ခြေက Apps Script URL ကို config လုပ်ဖို့ လိုပါမယ်။</div>
   </div>
 </div>
 
-<div id="overlay" class="overlay" onclick="closeResult()">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="close-btn" onclick="closeResult()">
-      <i class="fa-solid fa-xmark"></i>
+<!-- ================= USER HOME (pending by line) ================= -->
+<div id="userHomeScreen" class="hidden">
+  <header class="top">
+    <div class="row1">
+      <div>
+        <div class="eyebrow">TCL · မီတာဖတ်ချက်</div>
+        <h2>ဖတ်ချက်ကျန် လိုင်းများ</h2>
+      </div>
+      <div class="userchip">
+        <span id="uhDisplayName"></span>
+        <button class="logout" onclick="doLogout()">ထွက်မည်</button>
+      </div>
     </div>
-    <div id="result"></div>
-  </div>
+  </header>
+  <main>
+    <div class="totalbanner">
+      <div>
+        <div class="num mono" id="uhTotalPending">0</div>
+        <div class="lbl">ဖတ်ချက်ကျန်နေသေးသော အလုံးရေ</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="num mono" style="font-size:22px;color:#B9C2BC;" id="uhTotalDone">0</div>
+        <div class="lbl">ဖတ်ပြီးသား</div>
+      </div>
+    </div>
+    <div class="sectionlbl">လိုင်းအလိုက် ကျန်ရှိမှု</div>
+    <div class="linegrid" id="lineGrid"><div class="loading">Loading…</div></div>
+    <div class="viewall" onclick="openList(null)">မှတ်တမ်း အားလုံး ကြည့်ရန်</div>
+  </main>
 </div>
+
+<!-- ================= LIST / READING ENTRY ================= -->
+<div id="listScreen" class="hidden">
+  <header class="top">
+    <div class="backrow" id="listBackRow">
+      <button class="backbtn" onclick="backFromList()">← နောက်သို့</button>
+    </div>
+    <div class="row1">
+      <div>
+        <div class="eyebrow" id="listEyebrow">TCL · မီတာဖတ်ချက်</div>
+        <h2 id="listTitle">မှတ်တမ်းများ</h2>
+      </div>
+      <div class="userchip">
+        <span id="listDisplayName"></span>
+        <button class="logout" onclick="doLogout()">ထွက်မည်</button>
+      </div>
+    </div>
+    <div class="searchwrap">
+      <input type="text" id="searchBox" placeholder="Code, အမည်, လိပ်စာ, မီတာနံပါတ်ဖြင့် ရှာပါ" oninput="renderList()">
+    </div>
+    <div class="filterrow">
+      <button class="chip active" data-f="all" onclick="setFilter('all')">အားလုံး</button>
+      <button class="chip" data-f="pending" onclick="setFilter('pending')">ကျန်သည်</button>
+      <button class="chip" data-f="read" onclick="setFilter('read')">ဖတ်ပြီး</button>
+    </div>
+  </header>
+  <main>
+    <div class="listmeta">
+      <span id="countLabel">—</span>
+      <span style="cursor:pointer;color:var(--brass-light);" onclick="loadData()">↻ Refresh</span>
+    </div>
+    <div class="list" id="list"><div class="loading">Loading…</div></div>
+  </main>
+</div>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div id="adminScreen" class="hidden">
+  <header class="top">
+    <div class="row1">
+      <div>
+        <div class="eyebrow">TCL · Admin</div>
+        <h2>Dashboard</h2>
+      </div>
+      <div class="userchip">
+        <span class="rolepill">ADMIN</span>
+        <span id="adminDisplayName"></span>
+        <button class="logout" onclick="doLogout()">ထွက်မည်</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="statgrid">
+      <div class="statcard"><div class="n mono" id="stTotal">0</div><div class="l">စုစုပေါင်း</div></div>
+      <div class="statcard green"><div class="n mono" id="stRead">0</div><div class="l">ဖတ်ပြီး</div></div>
+      <div class="statcard red"><div class="n mono" id="stPending">0</div><div class="l">ကျန်သည်</div></div>
+    </div>
+    <div class="progresswrap">
+      <div class="plabel"><span>ပြီးစီးမှု</span><span id="stPercent">0%</span></div>
+      <div class="progressbar"><div class="fill" id="stFill" style="width:0%;"></div></div>
+    </div>
+
+    <div class="viewall" style="margin:0 14px;" onclick="openList(null)">မှတ်တမ်းစာရင်း အသေးစိတ် ကြည့်ရန်</div>
+
+    <div class="panelbox">
+      <h3>လိုင်းအလိုက် အခြေအနေ</h3>
+      <table class="dtable">
+        <thead><tr><th>လိုင်း</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
+        <tbody id="adminLineTable"><tr><td colspan="4">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="panelbox">
+      <h3>User အလိုက် ထည့်သွင်းမှု</h3>
+      <table class="dtable">
+        <thead><tr><th>Username</th><th>ထည့်သွင်းခဲ့သည့် အရေအတွက်</th></tr></thead>
+        <tbody id="adminUserTable"><tr><td colspan="2">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="panelbox">
+      <h3>လတ်တလော မှတ်တမ်း (နောက်ဆုံး ၂၀)</h3>
+      <table class="dtable">
+        <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>User</th></tr></thead>
+        <tbody id="adminRecentTable"><tr><td colspan="5">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="cycleaction">
+      <p><b>စက်ဝန်းအသစ် စတင်ခြင်း</b> — ဒီခလုတ်ကို နှိပ်လိုက်ရင် customer အားလုံးရဲ့ status ကို "ကျန်သည်" အဖြစ် ပြန်ပြောင်းပေးမှာဖြစ်ပြီး User တွေက ဒီလစဥ်အတွက် ဖတ်ချက်အသစ် ပြန်ရိုက်ထည့်နိုင်ပါမယ်။ (ယခင် history မှတ်တမ်းများ မပျက်ပါ)</p>
+      <button class="btn" onclick="startNewCycle()">စက်ဝန်းအသစ် စတင်မည်</button>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const API_CURRENT  = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4X1ZTeHplbUQ3Z2diY1ZSZndOT3I5ZGpVZHljN0lBd2VyZHJQLUVOcmNKVjlRSnJrdDZBdHJKWnVnandwRzhTWnpHdy9leGVj");
-const API_PREVIOUS = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6ZUh3bm1uS3NRNVZFeUZ2ZS1fQUhFS2NFQm03TTU4RHdna3hTZlNoVnRSdVdHY3Y0bVhQN0p4T3hoa252VmNqVjkvZXhlYw==");
+/* =====================================================
+   CONFIG — Apps Script ကို deploy လုပ်ပြီးရင် ရလာမယ့်
+   Web App URL ကို ဒီနေရာမှာ ထည့်ပါ
+   ===================================================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1eTFMM9_97Iolnu6FmrB3j5qYxa8MjoLMCEUFAt7zqZ-jXXPGpXZ6BORPHxIgONtv/exec";
 
-let mode = "current";
-let currentBillOpen = true;
+let session = null;       // { username, displayName, role }
+let records = [];         // Master data cache
+let openPanelCode = null;
+let currentFilter = 'all';
+let currentLineFilter = null; // when opened from a line card
+let cameFrom = 'userHome';    // for back navigation on list screen
 
-function openPage(type) {
-  if (type === "current" && !currentBillOpen) {
-    showNoticeModal();
+function toast(msg, isErr){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isErr ? ' err' : '');
+  setTimeout(()=>{ t.className='toast'; }, 2400);
+}
+function show(id){
+  ['loginScreen','userHomeScreen','listScreen','adminScreen'].forEach(s=>{
+    document.getElementById(s).classList.toggle('hidden', s!==id);
+  });
+}
+
+/* ---------------- Auth ---------------- */
+
+async function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginErr');
+  errEl.textContent = '';
+
+  if(SCRIPT_URL.indexOf('PASTE_YOUR') === 0){
+    errEl.textContent = 'Apps Script URL ကို ဦးစွာ config လုပ်ပေးပါ (script အပေါ်ဆုံး CONFIG ကဏ္ဍ)';
     return;
   }
-  mode = type;
-  document.getElementById("menu").style.display = "none";
-  document.getElementById("searchPage").style.display = "block";
-  document.getElementById("searchInput").value = "";
+  if(!u || !p){ errEl.textContent = 'Username နှင့် Password နှစ်ခုလုံး ထည့်ပါ'; return; }
 
-  const isCurrent = type === "current";
-  document.getElementById("pageTitle").textContent = isCurrent ? "ယခုလ မီတာဘေလ်" : "ယခင်လ မီတာဘေလ်";
-  document.getElementById("pageIcon").className = "page-header-icon " + (isCurrent ? "blue" : "amber");
-  document.getElementById("pageIcon").innerHTML = `<i class="fa-solid ${isCurrent ? 'fa-calendar-check' : 'fa-clock-rotate-left'}" style="color:#fff"></i>`;
-  document.getElementById("searchBtn").className = "btn " + (isCurrent ? "" : "amber");
-  setTimeout(() => document.getElementById("searchInput").focus(), 100);
-}
-
-function goBack() {
-  document.getElementById("menu").style.display = "block";
-  document.getElementById("searchPage").style.display = "none";
-}
-
-function closeResult() {
-  document.getElementById("overlay").classList.remove("show");
-}
-
-function showNoticeModal() {
-  const result = document.getElementById("result");
-  result.innerHTML = `
-    <div style="text-align:center;padding:16px 8px 8px">
-      <div style="
-        width:68px;height:68px;border-radius:50%;
-        background:rgba(239,68,68,0.1);
-        border:1px solid rgba(239,68,68,0.25);
-        display:flex;align-items:center;justify-content:center;
-        margin:0 auto 16px;font-size:28px;
-        animation:ringPulse 2s ease infinite;
-      ">🔒</div>
-      <div style="font-size:17px;font-weight:700;color:#f87171;margin-bottom:12px">
-        အသိပေးချက်
-      </div>
-      <div style="
-        font-size:14px;line-height:1.9;color:var(--text-muted);
-        background:rgba(239,68,68,0.07);
-        border:1px solid rgba(239,68,68,0.15);
-        border-radius:12px;padding:14px 16px;margin-bottom:20px;
-      ">
-        ၁ ရက်နေ့မှ ၁၀ ရက်နေ့အတွင်း<br>မီတာခ စစ်ဆေး၍ မရသေးပါ။
-      </div>
-      <button onclick="closeResult()" style="
-        padding:12px 36px;border:none;border-radius:12px;
-        background:linear-gradient(135deg,#ef4444,#b91c1c);
-        color:#fff;font-family:inherit;font-size:14px;font-weight:700;
-        cursor:pointer;box-shadow:0 4px 16px rgba(239,68,68,0.3);transition:all 0.2s;
-      "
-      onmouseover="this.style.transform='translateY(-2px)'"
-      onmouseout="this.style.transform=''"
-      >ပိတ်ရန်</button>
-    </div>`;
-  document.getElementById("overlay").classList.add("show");
-}
-
-function fmt(val, isMoney = false, currency = "฿") {
-  if (val === null || val === undefined || val === "" || val === false) return null;
-  if (isMoney && !isNaN(val)) return Number(val).toLocaleString() + " " + currency;
-  return String(val);
-}
-
-function row(label, value, isMoney = false, currency = "฿") {
-  const v = fmt(value, isMoney, currency);
-  if (v === null) return "";
-  return `<div class="row">
-    <span class="row-key">${label}</span>
-    <span class="row-val${isMoney ? " money" : ""}">${v}</span>
-  </div>`;
-}
-
-function section(dotClass, label, rows) {
-  if (!rows.trim()) return "";
-  return `<div class="section">
-    <div class="section-header">
-      <div class="section-dot ${dotClass}"></div>
-      <span class="section-label">${label}</span>
-    </div>
-    ${rows}
-  </div>`;
-}
-
-async function searchData() {
-const input = document.getElementById("searchInput").value.trim();
-if (!input) { document.getElementById("searchInput").focus(); return; }
-const currency = input.startsWith("15") ? "ကျပ်" : "฿";
-
-  const overlay = document.getElementById("overlay");
-  const result  = document.getElementById("result");
-
-  overlay.classList.add("show");
-  result.innerHTML = `
-    <div class="loader-wrap">
-      <div class="loader"></div>
-      <div class="loader-text">ရှာဖွေနေပါသည်...ခေတ္တစောင့်ဆိုင်းပေးပါ</div>
-    </div>`;
-
-  const API = mode === "current" ? API_CURRENT : API_PREVIOUS;
-
-  try {
-    const res  = await fetch(`${API}?code=${encodeURIComponent(input)}&t=${Date.now()}`);
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'စစ်ဆေးနေသည်...';
+  try{
+    const res = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
     const data = await res.json();
-
-    if (!data || !data.length) {
-      result.innerHTML = `
-        <div class="empty-wrap">
-          <div class="empty-icon"><i class="fa-solid fa-circle-xmark"></i></div>
-          <div class="empty-text">လူကြီးမင်း မီတာအားရှာမတွေ့ပါ။ ရုံးသို့ ဆက်သွယ်စုံစမ်းနိုင်ပါသည်။</div>
-        </div>`;
-      return;
-    }
-
-    const x = data[0];
-    const totalAmt =
-      Number(x.tax_5       || 0) +
-      Number(x.service_fee || 0) +
-      Number(x.debt        || 0) +
-      Number(x.total       || 0);
-
-    const infoRows = [
-      row("ကုဒ်",    x.code),
-      row("လိုင်း", x.line),
-      row("အမည်",   x.name),
-      row("လိပ်စာ", x.address),
-    ].join("");
-
-    const unitRows = [
-      row("ယခုယူနစ်",                x.current_unit),
-      row("ယခင်ယူနစ်",               x.previous_unit),
-      row("မြှောက်ကိန်း",             x.multiplier),
-      row("သုံးစွဲယူနစ်",             x.used_unit),
-      row("ယူနစ်နှုန်း",              x.unit_price, true, currency),
-      row("မီတာအဟောင်း သုံးစွဲယူနစ်", x.meter_change),
-    ].join("");
-
-    const billRows = [
-      row("Tr 5%",      x.tax_5,       true, currency),
-      row("ဝန်ဆောင်ခ", x.service_fee, true, currency),
-      row("ကြွေးကျန်", x.debt,        true, currency),
-      row("ယူနစ်ဖိုး",  x.total,       true, currency),
-    ].join("");
-
-    let statusHtml = "";
-    if (mode === "current") {
-      if (x.payment_date && x.payment_date !== "False") {
-        statusHtml = `
-          <div class="status-card status-paid">
-            <div class="status-icon"><i class="fa-solid fa-circle-check"></i></div>
-            <div>လူကြီးမင်း၏ မီတာခအား ${x.payment_date.split("T")[0]} တွင် ပေးဆောင်ပြီး ဖြစ်ပါသည်။</div>
-          </div>`;
+    if(data.success){
+      session = { username: data.username, displayName: data.displayName, role: data.role };
+      if(session.role === 'admin'){
+        document.getElementById('adminDisplayName').textContent = session.displayName;
+        show('adminScreen');
+        loadAdminStats();
       } else {
-        statusHtml = `
-          <div class="status-card status-unpaid">
-            <div class="status-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-            <div>လူကြီးမင်း၏ ယခုလ မီတာခ ကျသင့်ငွေအား မပေးဆောင်ရသေးပါ။</div>
-          </div>`;
+        document.getElementById('uhDisplayName').textContent = session.displayName;
+        show('userHomeScreen');
+        loadData();
       }
+    } else {
+      errEl.textContent = data.message || 'ဝင်ရောက်၍ မရပါ';
     }
+  } catch(e){
+    errEl.textContent = 'ချိတ်ဆက်မှု အမှား — URL ကို ပြန်စစ်ပါ';
+  } finally {
+    btn.disabled = false; btn.textContent = 'ဝင်မည်';
+  }
+}
 
-    result.innerHTML = `
-      <div id="billContent">
-<div class="result-title" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-  <span>
-    <i class="fa-solid fa-receipt" style="color:var(--primary);margin-right:8px"></i>
-    TTEC မီတာဘေလ် အချက်အလက်
-  </span>
-  <span style="font-size:11px;font-weight:500;color:var(--text-muted);white-space:nowrap;padding-top:3px;">
-    ${new Date().toLocaleString('en-GB', {
-      year:'numeric', month:'short', day:'numeric',
-      hour:'2-digit', minute:'2-digit'
-    })}
-  </span>
-</div>
-        ${section("dot-blue",   "အချက်အလက်",     infoRows)}
-        ${section("dot-purple", "ယူနစ်",          unitRows)}
-        ${section("dot-amber",  "ငွေတွက်ချက်မှု", billRows)}
-        <div class="total-card">
-          <div class="total-label">စုစုပေါင်း ကျသင့်ငွေ</div>
-          <div class="total-amount">${totalAmt.toLocaleString()} ${currency}</div>
-        </div>
-        ${statusHtml}
+function doLogout(){
+  session = null; records = []; openPanelCode = null; currentLineFilter = null; currentFilter='all';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  show('loginScreen');
+}
+
+/* ---------------- User home (pending by line) ---------------- */
+
+async function loadData(){
+  const gridEl = document.getElementById('lineGrid');
+  if(gridEl) gridEl.innerHTML = '<div class="loading">Loading…</div>';
+  try{
+    const res = await fetch(`${SCRIPT_URL}?action=getData`);
+    const data = await res.json();
+    if(data.success){
+      records = data.data;
+      renderUserHome();
+      renderList();
+    } else {
+      if(gridEl) gridEl.innerHTML = `<div class="empty">Data ရယူ၍ မရပါ — ${data.message||''}</div>`;
+    }
+  } catch(e){
+    if(gridEl) gridEl.innerHTML = '<div class="empty">ချိတ်ဆက်မှု အမှား — Apps Script URL ကို ပြန်စစ်ပါ</div>';
+  }
+}
+
+function renderUserHome(){
+  const totalPending = records.filter(r=>r.status!=='Read').length;
+  const totalDone = records.length - totalPending;
+  document.getElementById('uhTotalPending').textContent = totalPending;
+  document.getElementById('uhTotalDone').textContent = totalDone;
+
+  const perLine = {};
+  records.forEach(r=>{
+    const ln = r.lineNo || 'အမည်မသိ';
+    if(!perLine[ln]) perLine[ln] = { total:0, pending:0 };
+    perLine[ln].total++;
+    if(r.status !== 'Read') perLine[ln].pending++;
+  });
+
+  const lines = Object.keys(perLine).sort();
+  const gridEl = document.getElementById('lineGrid');
+  if(lines.length === 0){
+    gridEl.innerHTML = '<div class="empty">Master sheet ထဲမှာ data မတွေ့ပါ</div>';
+    return;
+  }
+  gridEl.innerHTML = lines.map(ln=>{
+    const v = perLine[ln];
+    const done = v.pending === 0;
+    return `
+    <div class="linecard ${done?'done':''}" onclick="openList('${escapeAttr(ln)}')">
+      <div>
+        <div class="lname">လိုင်း ${escapeHtml(ln)}</div>
+        <div class="lsub">စုစုပေါင်း ${v.total} အလုံး</div>
       </div>
-      <button class="save-btn" id="saveBtn" onclick="saveAsImage()">
-        <i class="fa-solid fa-download"></i> သိမ်းဆည်းမည် (Save)
-      </button>
-    `;
+      <div class="lcount mono">${done? '✓' : v.pending}</div>
+    </div>`;
+  }).join('');
+}
 
-  } catch (e) {
-    result.innerHTML = `
-      <div class="empty-wrap">
-        <div class="empty-icon"><i class="fa-solid fa-triangle-exclamation" style="color:#f87171"></i></div>
-        <div class="empty-text" style="color:#f87171">Server Error — ထပ်မံကြိုးစားပါ</div>
-      </div>`;
+function openList(lineNo){
+  currentLineFilter = lineNo;
+  currentFilter = 'all';
+  cameFrom = (session.role === 'admin') ? 'admin' : 'userHome';
+  document.getElementById('listTitle').textContent = lineNo ? `လိုင်း ${lineNo}` : 'မှတ်တမ်းများ';
+  document.getElementById('listDisplayName').textContent = session.displayName;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.f==='all'));
+  document.getElementById('searchBox').value = '';
+  document.getElementById('listBackRow').classList.remove('hidden');
+  show('listScreen');
+  renderList();
+}
+
+function backFromList(){
+  if(cameFrom === 'admin'){ show('adminScreen'); }
+  else { show('userHomeScreen'); renderUserHome(); }
+}
+
+/* ---------------- List / reading entry ---------------- */
+
+function setFilter(f){
+  currentFilter = f;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.f===f));
+  renderList();
+}
+
+function renderList(){
+  const listEl = document.getElementById('list');
+  if(!listEl) return;
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+
+  let filtered = records.filter(r=>{
+    if(currentLineFilter && String(r.lineNo) !== String(currentLineFilter)) return false;
+    if(currentFilter === 'pending' && r.status === 'Read') return false;
+    if(currentFilter === 'read' && r.status !== 'Read') return false;
+    if(!q) return true;
+    return [r.code, r.name, r.address, r.meterNo, r.lineNo].some(v=>
+      String(v||'').toLowerCase().includes(q)
+    );
+  });
+
+  document.getElementById('countLabel').textContent = `${filtered.length} ခု တွေ့ပါသည်`;
+
+  if(filtered.length === 0){
+    listEl.innerHTML = '<div class="empty">မှတ်တမ်း မတွေ့ပါ</div>';
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(r=>{
+    const isOpen = openPanelCode === r.code;
+    const isRead = r.status === 'Read';
+    const lastDate = r.lastReadingDate ? new Date(r.lastReadingDate).toLocaleDateString('my-MM') : '—';
+    return `
+    <div class="card ${isRead?'isread':'ispending'}" onclick="togglePanel('${escapeAttr(r.code)}')">
+      <div class="toprow">
+        <div>
+          <span class="code mono">${escapeHtml(r.code)}</span>
+          <div class="name">${escapeHtml(r.name)}</div>
+          <div class="addr">${escapeHtml(r.address)}</div>
+        </div>
+        <span class="statustag ${isRead?'read':'pending'}">${isRead?'ဖတ်ပြီး':'ကျန်သည်'}</span>
+      </div>
+      <div class="meta2">
+        <span>လိုင်း <b>${escapeHtml(r.lineNo)}</b></span>
+        <span>မီတာနံပါတ် <b>${escapeHtml(r.meterNo)}</b></span>
+      </div>
+      <div class="meta2">
+        <span>နောက်ဆုံးဖတ်ချက် <span class="lastread mono">${escapeHtml(r.lastReading)}</span></span>
+        <span>(${lastDate})</span>
+      </div>
+
+      <div class="panel ${isOpen?'open':''}" onclick="event.stopPropagation()">
+        <div class="digitwrap">
+          <label>ယခုဖတ်ချက်</label>
+          <input type="number" inputmode="decimal" id="input-${cssSafe(r.code)}" placeholder="0000">
+        </div>
+        <div class="panelbtns">
+          <button class="btn secondary" onclick="togglePanel('${escapeAttr(r.code)}')">မလုပ်တော့ပါ</button>
+          <button class="btn" onclick="saveReading('${escapeAttr(r.code)}')">သိမ်းမည်</button>
+        </div>
+        <div class="savenote">Save လုပ်ရင် history မှတ်တမ်းအဖြစ် အသစ်ထည့်ပြီး status ကို "ဖတ်ပြီး" အဖြစ် ပြောင်းပေးပါမယ်</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togglePanel(code){
+  openPanelCode = (openPanelCode === code) ? null : code;
+  renderList();
+  if(openPanelCode){
+    setTimeout(()=>{
+      const el = document.getElementById(`input-${cssSafe(code)}`);
+      if(el) el.focus();
+    }, 30);
   }
 }
 
-async function saveAsImage() {
-  const saveBtn = document.getElementById("saveBtn");
-  const billContent = document.getElementById("billContent");
+async function saveReading(code){
+  const inputEl = document.getElementById(`input-${cssSafe(code)}`);
+  const val = inputEl ? inputEl.value.trim() : '';
+  if(!val){ toast('ဖတ်ချက် ရိုက်ထည့်ပါ', true); return; }
+  const rec = records.find(r=>r.code === code);
+  if(!rec) return;
 
-  if (!billContent) return;
-
-  
-  saveBtn.style.display = "none";
-
-  try {
-    const canvas = await html2canvas(billContent, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false
+  try{
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+      body: JSON.stringify({
+        action: 'saveReading',
+        code: rec.code, lineNo: rec.lineNo, name: rec.name, address: rec.address,
+        meterNo: rec.meterNo, reading: val, enteredBy: session ? session.username : ''
+      })
     });
-
-    const link = document.createElement("a");
-    const code = document.getElementById("searchInput").value.trim();
-    link.download = `TTEC Meter-Bill-${code}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  } catch (e) {
-    alert("ပုံသိမ်း၍ မရပါ။ ထပ်ကြိုးစားပါ။");
+    const data = await res.json();
+    if(data.success){
+      rec.lastReading = val;
+      rec.lastReadingDate = new Date().toISOString();
+      rec.status = 'Read';
+      openPanelCode = null;
+      renderList();
+      toast('သိမ်းပြီးပါပြီ ✓');
+    } else {
+      toast(data.message || 'သိမ်း၍ မရပါ', true);
+    }
+  } catch(e){
+    toast('ချိတ်ဆက်မှု အမှား', true);
   }
-
- 
-  saveBtn.style.display = "flex";
 }
 
-function sendHeight() {
-  parent.postMessage({ type: "resize", height: document.body.scrollHeight }, "*");
+/* ---------------- Admin dashboard ---------------- */
+
+async function loadAdminStats(){
+  ['adminLineTable','adminUserTable','adminRecentTable'].forEach(id=>{
+    document.getElementById(id).innerHTML = '<tr><td>Loading…</td></tr>';
+  });
+  try{
+    const res = await fetch(`${SCRIPT_URL}?action=getAdminStats&username=${encodeURIComponent(session.username)}`);
+    const data = await res.json();
+    if(!data.success){ toast(data.message || 'Dashboard data ရယူ၍ မရပါ', true); return; }
+
+    document.getElementById('stTotal').textContent = data.total;
+    document.getElementById('stRead').textContent = data.read;
+    document.getElementById('stPending').textContent = data.pending;
+    const pct = data.total ? Math.round((data.read/data.total)*100) : 0;
+    document.getElementById('stPercent').textContent = pct + '%';
+    document.getElementById('stFill').style.width = pct + '%';
+
+    document.getElementById('adminLineTable').innerHTML = data.perLine.length ? data.perLine.map(l=>`
+      <tr>
+        <td>${escapeHtml(l.lineNo)}</td>
+        <td class="minitag">${l.total}</td>
+        <td class="minitag" style="color:var(--green);">${l.read}</td>
+        <td class="minitag" style="color:var(--red);">${l.pending}</td>
+      </tr>`).join('') : '<tr><td colspan="4">Data မရှိသေးပါ</td></tr>';
+
+    document.getElementById('adminUserTable').innerHTML = data.perUser.length ? data.perUser.map(u=>`
+      <tr><td>${escapeHtml(u.username)}</td><td class="minitag">${u.count}</td></tr>`).join('')
+      : '<tr><td colspan="2">ဖတ်ချက် ထည့်သွင်းမှု မရှိသေးပါ</td></tr>';
+
+    document.getElementById('adminRecentTable').innerHTML = data.recent.length ? data.recent.map(r=>{
+      const d = r.timestamp ? new Date(r.timestamp) : null;
+      const dstr = d ? `${d.toLocaleDateString('my-MM')} ${d.toLocaleTimeString('my-MM',{hour:'2-digit',minute:'2-digit'})}` : '—';
+      return `<tr>
+        <td class="minitag">${dstr}</td>
+        <td class="minitag">${escapeHtml(r.code)}</td>
+        <td>${escapeHtml(r.name)}</td>
+        <td class="minitag">${escapeHtml(r.reading)}</td>
+        <td>${escapeHtml(r.enteredBy)}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="5">မှတ်တမ်း မရှိသေးပါ</td></tr>';
+
+  } catch(e){
+    toast('ချိတ်ဆက်မှု အမှား', true);
+  }
 }
-window.onload  = sendHeight;
-window.onresize = sendHeight;
+
+async function startNewCycle(){
+  if(!confirm('Customer အားလုံးရဲ့ status ကို "ကျန်သည်" အဖြစ် ပြန်ပြောင်းမှာ သေချာပါသလား?')) return;
+  try{
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'startNewCycle', username: session.username })
+    });
+    const data = await res.json();
+    if(data.success){
+      toast('စက်ဝန်းအသစ် စတင်ပြီးပါပြီ');
+      loadAdminStats();
+    } else {
+      toast(data.message || 'မအောင်မြင်ပါ', true);
+    }
+  } catch(e){
+    toast('ချိတ်ဆက်မှု အမှား', true);
+  }
+}
+
+/* ---------------- Utils ---------------- */
+
+function escapeHtml(s){
+  return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(s){ return escapeHtml(s).replace(/'/g,"\\'"); }
+function cssSafe(s){ return String(s).replace(/[^a-zA-Z0-9_-]/g,'_'); }
 </script>
 </body>
 </html>
