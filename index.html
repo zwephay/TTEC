@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCL — မီတာဖတ်ချက် စနစ်</title>
+<title>TTEC — မီတာဖတ်ချက် ပြန်စစ်ဆေးခြင်း</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -30,7 +30,6 @@
   button{font-family:inherit;}
   .hidden{display:none !important;}
 
-  /* ---------- Login ---------- */
   #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
   .idcard{
     width:100%;max-width:360px;background:var(--ink);color:var(--paper-2);
@@ -59,7 +58,6 @@
   .errmsg{color:#F0A79C;font-size:13px;margin-top:10px;min-height:16px;}
   .cfgnote{margin-top:16px;font-size:11px;color:#8FA098;line-height:1.5;}
 
-  /* ---------- Shared header ---------- */
   header.top{background:var(--ink);color:var(--paper-2);padding:18px 18px 16px;position:sticky;top:0;z-index:10;}
   header.top .row1{display:flex;justify-content:space-between;align-items:center;gap:10px;}
   header.top .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--brass-light);text-transform:uppercase;}
@@ -100,7 +98,6 @@
     margin:16px 14px 0;padding:13px;text-align:center;border:1px dashed var(--line);
     border-radius:10px;color:var(--ink);font-size:14px;cursor:pointer;font-weight:600;
   }
-
 
   .searchwrap{margin-top:14px;}
   .searchwrap input{
@@ -144,6 +141,13 @@
     font-size:22px;letter-spacing:.08em;color:var(--brass-light);text-align:right;font-weight:600;
   }
   .digitwrap input:focus{outline:none;}
+  .remarkwrap{margin-bottom:10px;}
+  .remarkwrap label{display:block;font-size:11px;color:#5C6B62;margin-bottom:6px;}
+  .remarkwrap textarea{
+    width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+    font-family:inherit;font-size:13px;color:var(--ink);resize:vertical;background:var(--paper-2);
+  }
+  .remarkwrap textarea:focus{outline:2px solid var(--brass-light);outline-offset:1px;}
   .panelbtns{display:flex;gap:8px;}
   .panelbtns .btn{padding:11px;font-size:14px;}
   .btn.secondary{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:600;}
@@ -193,7 +197,7 @@
 <div id="loginScreen">
   <div class="idcard">
     <div class="eyebrow">TTEC · မီတာဖတ်ချက်ပြန်လည်စစ်ဆေးခြင်း</div>
-    <h1>မီတာဖတ်ချက်<br>ပြန်လည်စစ်ဆေးထည့်သွင်းရန်</h1>
+    <h1>မီတာဖတ်ချက်<br>ပြန်လည်စစ်ဆေးရန်</h1>
     <div class="field">
       <label>Username</label>
       <input type="text" id="loginUser" autocomplete="username" placeholder="user1">
@@ -210,10 +214,13 @@
 
 <div id="userHomeScreen" class="hidden">
   <header class="top">
+    <div class="backrow hidden" id="uhBackRow">
+      <button class="backbtn" onclick="backToCategories()">← Main Line များ</button>
+    </div>
     <div class="row1">
       <div>
         <div class="eyebrow">TTEC · မီတာဖတ်ချက်</div>
-        <h2>ဖတ်ချက်ကျန် လိုင်းများ</h2>
+        <h2 id="uhTitle">Main Line ရွေးပါ</h2>
       </div>
       <div class="userchip">
         <span id="uhDisplayName"></span>
@@ -232,7 +239,7 @@
         <div class="lbl">ဖတ်ပြီးသား</div>
       </div>
     </div>
-    <div class="sectionlbl">လိုင်းအလိုက် ကျန်ရှိမှု</div>
+    <div class="sectionlbl" id="uhSectionLbl">Main Line အလိုက် ကျန်ရှိမှု</div>
     <div class="linegrid" id="lineGrid"><div class="loading">Loading…</div></div>
     <div class="viewall" onclick="openList(null)">မှတ်တမ်း အားလုံး ကြည့်ရန်</div>
   </main>
@@ -300,7 +307,7 @@
     <div class="viewall" style="margin:0 14px;" onclick="openList(null)">မှတ်တမ်းစာရင်း အသေးစိတ် ကြည့်ရန်</div>
 
     <div class="panelbox">
-      <h3>လိုင်းနံပတ်အလိုက် အခြေအနေ (User)</h3>
+      <h3>လိုင်းနံပတ်အလိုက် </h3>
       <table class="dtable">
         <thead><tr><th>လိုင်း</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLine2Table"><tr><td colspan="4">Loading…</td></tr></tbody>
@@ -324,10 +331,10 @@
     </div>
 
     <div class="panelbox">
-      <h3>ဖတ်ချက်ထည့်သွင်းခဲ့မှု မှတ်တမ်း (နောက်ဆုံး ၂၀)</h3>
+      <h3>ဖတ်ချက်ထည့်သွင်းခဲ့မှု (နောက်ဆုံး ၂၀)</h3>
       <table class="dtable">
-        <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>User</th></tr></thead>
-        <tbody id="adminRecentTable"><tr><td colspan="5">Loading…</td></tr></tbody>
+        <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>မီတာဖတ်အမည်</th><th>မှတ်ချက်</th></tr></thead>
+        <tbody id="adminRecentTable"><tr><td colspan="6">Loading…</td></tr></tbody>
       </table>
     </div>
 
@@ -345,6 +352,7 @@ let records = [];
 let openPanelCode = null;
 let currentFilter = 'all';
 let currentLineFilter = null; 
+let currentCategoryFilter = null;
 let cameFrom = 'userHome';    
 
 function toast(msg, isErr){
@@ -392,14 +400,14 @@ async function doLogin(){
       errEl.textContent = data.message || 'ဝင်ရောက်၍ မရပါ';
     }
   } catch(e){
-    errEl.textContent = 'ချိတ်ဆက်မှု အမှား — URL ကို ပြန်စစ်ပါ';
+    errEl.textContent = 'URL ကို ပြန်စစ်ပါ';
   } finally {
     btn.disabled = false; btn.textContent = 'ဝင်မည်';
   }
 }
 
 function doLogout(){
-  session = null; records = []; openPanelCode = null; currentLineFilter = null; currentFilter='all';
+  session = null; records = []; openPanelCode = null; currentLineFilter = null; currentCategoryFilter = null; currentFilter='all';
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   show('loginScreen');
@@ -424,41 +432,97 @@ async function loadData(){
 }
 
 function renderUserHome(){
-  const totalPending = records.filter(r=>r.status!=='Read').length;
-  const totalDone = records.length - totalPending;
+  const scoped = currentCategoryFilter
+    ? records.filter(r => String(r.lineNo) === String(currentCategoryFilter))
+    : records;
+
+  const totalPending = scoped.filter(r=>r.status!=='Read').length;
+  const totalDone = scoped.length - totalPending;
   document.getElementById('uhTotalPending').textContent = totalPending;
   document.getElementById('uhTotalDone').textContent = totalDone;
 
-  const perLine = {};
-  records.forEach(r=>{
-    const ln = r.lineNo2 || 'အမည်မသိ';
-    if(!perLine[ln]) perLine[ln] = { total:0, pending:0 };
-    perLine[ln].total++;
-    if(r.status !== 'Read') perLine[ln].pending++;
-  });
-
-  const lines = Object.keys(perLine).sort();
   const gridEl = document.getElementById('lineGrid');
-  if(lines.length === 0){
-    gridEl.innerHTML = '<div class="empty">Master sheet ထဲမှာ data မတွေ့ပါ</div>';
-    return;
+  const backRow = document.getElementById('uhBackRow');
+  const titleEl = document.getElementById('uhTitle');
+  const sectionEl = document.getElementById('uhSectionLbl');
+
+  if(currentCategoryFilter === null){
+    backRow.classList.add('hidden');
+    titleEl.textContent = 'Main Line ရွေးပါ';
+    sectionEl.textContent = 'Main Line အလိုက် ကျန်ရှိမှု';
+
+    const perCat = {};
+    records.forEach(r=>{
+      const cat = r.lineNo || 'အမည်မသိ';
+      if(!perCat[cat]) perCat[cat] = { total:0, pending:0 };
+      perCat[cat].total++;
+      if(r.status !== 'Read') perCat[cat].pending++;
+    });
+
+    const cats = Object.keys(perCat).sort();
+    if(cats.length === 0){
+      gridEl.innerHTML = '<div class="empty">Master sheet ထဲမှာ data မတွေ့ပါ</div>';
+      return;
+    }
+    gridEl.innerHTML = cats.map(cat=>{
+      const v = perCat[cat];
+      const done = v.pending === 0;
+      return `
+      <div class="linecard ${done?'done':''}" onclick="selectCategory('${escapeAttr(cat)}')">
+        <div>
+          <div class="lname">Line ${escapeHtml(cat)}</div>
+          <div class="lsub">စုစုပေါင်း ${v.total} အလုံး</div>
+        </div>
+        <div class="lcount mono">${done? '✓' : v.pending}</div>
+      </div>`;
+    }).join('');
+  } else {
+  
+    backRow.classList.remove('hidden');
+    titleEl.textContent = `Line ${currentCategoryFilter} ရဲ့ လိုင်းများ`;
+    sectionEl.textContent = 'လိုင်းအလိုက် ကျန်ရှိမှု';
+
+    const perLine = {};
+    scoped.forEach(r=>{
+      const ln = r.lineNo2 || 'အမည်မသိ';
+      if(!perLine[ln]) perLine[ln] = { total:0, pending:0 };
+      perLine[ln].total++;
+      if(r.status !== 'Read') perLine[ln].pending++;
+    });
+
+    const lines = Object.keys(perLine).sort();
+    if(lines.length === 0){
+      gridEl.innerHTML = '<div class="empty">ဒီ Line ထဲမှာ data မတွေ့ပါ</div>';
+      return;
+    }
+    gridEl.innerHTML = lines.map(ln=>{
+      const v = perLine[ln];
+      const done = v.pending === 0;
+      return `
+      <div class="linecard ${done?'done':''}" onclick="openList('${escapeAttr(ln)}')">
+        <div>
+          <div class="lname">လိုင်း ${escapeHtml(ln)}</div>
+          <div class="lsub">စုစုပေါင်း ${v.total} အလုံး</div>
+        </div>
+        <div class="lcount mono">${done? '✓' : v.pending}</div>
+      </div>`;
+    }).join('');
   }
-  gridEl.innerHTML = lines.map(ln=>{
-    const v = perLine[ln];
-    const done = v.pending === 0;
-    return `
-    <div class="linecard ${done?'done':''}" onclick="openList('${escapeAttr(ln)}')">
-      <div>
-        <div class="lname">လိုင်း ${escapeHtml(ln)}</div>
-        <div class="lsub">စုစုပေါင်း ${v.total} အလုံး</div>
-      </div>
-      <div class="lcount mono">${done? '✓' : v.pending}</div>
-    </div>`;
-  }).join('');
+}
+
+function selectCategory(cat){
+  currentCategoryFilter = cat;
+  renderUserHome();
+}
+
+function backToCategories(){
+  currentCategoryFilter = null;
+  renderUserHome();
 }
 
 function openList(lineNo){
   currentLineFilter = lineNo;
+  if(lineNo === null) currentCategoryFilter = null; 
   currentFilter = 'all';
   cameFrom = (session.role === 'admin') ? 'admin' : 'userHome';
   document.getElementById('listTitle').textContent = lineNo ? `လိုင်း ${lineNo}` : 'မှတ်တမ်းများ';
@@ -489,6 +553,7 @@ function renderList(){
   const q = document.getElementById('searchBox').value.trim().toLowerCase();
 
   let filtered = records.filter(r=>{
+    if(currentCategoryFilter && String(r.lineNo) !== String(currentCategoryFilter)) return false;
     if(currentLineFilter && String(r.lineNo2) !== String(currentLineFilter)) return false;
     if(currentFilter === 'pending' && r.status === 'Read') return false;
     if(currentFilter === 'read' && r.status !== 'Read') return false;
@@ -534,6 +599,10 @@ function renderList(){
           <label>ယခုဖတ်ချက်</label>
           <input type="number" inputmode="decimal" id="input-${cssSafe(r.code)}" placeholder="0000">
         </div>
+        <div class="remarkwrap">
+          <label for="remark-${cssSafe(r.code)}">မှတ်ချက် (မထည့်ချင်လည်း ရပါသည်)</label>
+          <textarea id="remark-${cssSafe(r.code)}" rows="2" placeholder="ဥပမာ - မီတာပျက်နေသည်၊ အိမ်ပိတ်နေသည်..."></textarea>
+        </div>
         <div class="panelbtns">
           <button class="btn secondary" onclick="togglePanel('${escapeAttr(r.code)}')">မလုပ်တော့ပါ</button>
           <button class="btn" onclick="saveReading('${escapeAttr(r.code)}')">သိမ်းမည်</button>
@@ -557,7 +626,9 @@ function togglePanel(code){
 
 async function saveReading(code){
   const inputEl = document.getElementById(`input-${cssSafe(code)}`);
+  const remarkEl = document.getElementById(`remark-${cssSafe(code)}`);
   const val = inputEl ? inputEl.value.trim() : '';
+  const remarkVal = remarkEl ? remarkEl.value.trim() : '';
   if(!val){ toast('ဖတ်ချက် ရိုက်ထည့်ပါ', true); return; }
   const rec = records.find(r=>String(r.code) === String(code));
   if(!rec) return;
@@ -569,7 +640,7 @@ async function saveReading(code){
       body: JSON.stringify({
         action: 'saveReading',
         code: rec.code, lineNo: rec.lineNo, lineNo2: rec.lineNo2, name: rec.name, address: rec.address,
-        meterNo: rec.meterNo, reading: val, enteredBy: session ? session.username : ''
+        meterNo: rec.meterNo, reading: val, remark: remarkVal, enteredBy: session ? session.username : ''
       })
     });
     const data = await res.json();
@@ -634,8 +705,9 @@ async function loadAdminStats(){
         <td>${escapeHtml(r.name)}</td>
         <td class="minitag">${escapeHtml(r.reading)}</td>
         <td>${escapeHtml(r.enteredBy)}</td>
+        <td>${escapeHtml(r.remark || '—')}</td>
       </tr>`;
-    }).join('') : '<tr><td colspan="5">မှတ်တမ်း မရှိသေးပါ</td></tr>';
+    }).join('') : '<tr><td colspan="6">မှတ်တမ်း မရှိသေးပါ</td></tr>';
 
   } catch(e){
     toast('ချိတ်ဆက်မှု အမှား', true);
