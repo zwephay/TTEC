@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TTEC — မီတာဖတ်ချက် ပြန်စစ်ဆေးခြင်း</title>
+<title>TCL — မီတာဖတ်ချက် စနစ်</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -46,7 +46,7 @@
   .field label{display:block;font-size:12px;color:#B9C2BC;margin-bottom:6px;}
   .field input{
     width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);
-    background:rgba(255,255,255,0.06);color:#fff;font-size:15px;font-family:inherit;
+    background:rgba(255,255,255,0.06);color:#fff;font-size:16px;font-family:inherit;
   }
   .field input:focus{outline:2px solid var(--brass-light);outline-offset:1px;}
   .btn{
@@ -69,10 +69,10 @@
   }
   .iconbtn, .logout{
     background:none;border:1px solid rgba(255,255,255,.2);color:#EDEFEA;border-radius:6px;
-    padding:6px 10px;font-size:12px;cursor:pointer;
+    padding:8px 12px;font-size:12px;cursor:pointer;min-height:32px;
   }
   .backrow{display:flex;align-items:center;gap:10px;margin-bottom:2px;}
-  .backbtn{background:none;border:none;color:var(--brass-light);font-size:13px;cursor:pointer;padding:0;font-family:inherit;}
+  .backbtn{background:none;border:none;color:var(--brass-light);font-size:14px;cursor:pointer;padding:8px 0;font-family:inherit;}
 
   main{max-width:640px;margin:0 auto;padding-bottom:50px;}
 
@@ -101,14 +101,14 @@
 
   .searchwrap{margin-top:14px;}
   .searchwrap input{
-    width:100%;padding:11px 14px;border-radius:8px;border:none;
-    background:rgba(255,255,255,0.1);color:#fff;font-size:14px;font-family:inherit;
+    width:100%;padding:12px 14px;border-radius:8px;border:none;
+    background:rgba(255,255,255,0.1);color:#fff;font-size:16px;font-family:inherit;
   }
   .searchwrap input::placeholder{color:#93A19B;}
   .filterrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
   .chip{
-    font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.25);
-    color:#D9DED8;cursor:pointer;background:none;
+    font-size:12px;padding:7px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.25);
+    color:#D9DED8;cursor:pointer;background:none;min-height:32px;
   }
   .chip.active{background:var(--brass);color:#1A1200;border-color:var(--brass);font-weight:600;}
 
@@ -145,7 +145,7 @@
   .remarkwrap label{display:block;font-size:11px;color:#5C6B62;margin-bottom:6px;}
   .remarkwrap textarea{
     width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
-    font-family:inherit;font-size:13px;color:var(--ink);resize:vertical;background:var(--paper-2);
+    font-family:inherit;font-size:16px;color:var(--ink);resize:vertical;background:var(--paper-2);
   }
   .remarkwrap textarea:focus{outline:2px solid var(--brass-light);outline-offset:1px;}
   .panelbtns{display:flex;gap:8px;}
@@ -169,12 +169,14 @@
 
   .panelbox{margin:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
   .panelbox h3{margin:0;padding:14px 16px 10px;font-size:14px;border-bottom:1px solid var(--line);}
+  .tablescroll{max-height:260px;overflow-y:auto;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   table.dtable{width:100%;border-collapse:collapse;font-size:12.5px;}
   table.dtable th{
+    position:sticky;top:0;
     text-align:left;padding:8px 12px;color:#5C6B62;font-weight:600;font-size:11px;
     border-bottom:1px solid var(--line);background:var(--paper-2);
   }
-  table.dtable td{padding:9px 12px;border-bottom:1px solid #EDEFEA;}
+  table.dtable td{padding:9px 12px;border-bottom:1px solid #EDEFEA;white-space:nowrap;}
   table.dtable tr:last-child td{border-bottom:none;}
   .minitag{font-family:'IBM Plex Mono',monospace;font-size:11px;}
 
@@ -197,7 +199,7 @@
 <div id="loginScreen">
   <div class="idcard">
     <div class="eyebrow">TTEC · မီတာဖတ်ချက်ပြန်လည်စစ်ဆေးခြင်း</div>
-    <h1>မီတာဖတ်ချက်<br>ပြန်လည်စစ်ဆေးရန်</h1>
+    <h1>မီတာဖတ်ချက်<br>ပြန်လည်စစ်ဆေးထည့်သွင်းရန်</h1>
     <div class="field">
       <label>Username</label>
       <input type="text" id="loginUser" autocomplete="username" placeholder="user1">
@@ -220,7 +222,7 @@
     <div class="row1">
       <div>
         <div class="eyebrow">TTEC · မီတာဖတ်ချက်</div>
-        <h2 id="uhTitle">Main Line ရွေးပါ</h2>
+        <h2 id="uhTitle">Main line ရွေးပါ</h2>
       </div>
       <div class="userchip">
         <span id="uhDisplayName"></span>
@@ -283,12 +285,13 @@
   <header class="top">
     <div class="row1">
       <div>
-        <div class="eyebrow">TCL · Admin</div>
+        <div class="eyebrow">TTEC · Admin</div>
         <h2>Dashboard</h2>
       </div>
       <div class="userchip">
         <span class="rolepill">ADMIN</span>
         <span id="adminDisplayName"></span>
+        <button class="iconbtn" id="notifyBtn" onclick="enableNotifications()">🔔 Notification</button>
         <button class="logout" onclick="doLogout()">ထွက်မည်</button>
       </div>
     </div>
@@ -307,36 +310,45 @@
     <div class="viewall" style="margin:0 14px;" onclick="openList(null)">မှတ်တမ်းစာရင်း အသေးစိတ် ကြည့်ရန်</div>
 
     <div class="panelbox">
-      <h3>လိုင်းနံပတ်အလိုက် </h3>
+      <h3>လိုင်းနံပတ်အလိုက်</h3>
+      <div class="tablescroll">
       <table class="dtable">
         <thead><tr><th>လိုင်း</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLine2Table"><tr><td colspan="4">Loading…</td></tr></tbody>
       </table>
+      </div>
     </div>
 
     <div class="panelbox">
       <h3>လိုင်းအုပ်စုအလိုက် အခြေအနေ</h3>
+      <div class="tablescroll">
       <table class="dtable">
         <thead><tr><th>အုပ်စု</th><th>စုစုပေါင်း</th><th>ဖတ်ပြီး</th><th>ကျန်</th></tr></thead>
         <tbody id="adminLineTable"><tr><td colspan="4">Loading…</td></tr></tbody>
       </table>
+      </div>
     </div>
 
     <div class="panelbox">
       <h3>မီတာဖတ်ချက်ထည့်သွင်းသူအလိုက် ဖတ်ချက်ထည့်သွင်းမှု</h3>
+      <div class="tablescroll">
       <table class="dtable">
         <thead><tr><th>Username</th><th>ထည့်သွင်းခဲ့သည့် အရေအတွက်</th></tr></thead>
         <tbody id="adminUserTable"><tr><td colspan="2">Loading…</td></tr></tbody>
       </table>
+      </div>
     </div>
 
     <div class="panelbox">
       <h3>ဖတ်ချက်ထည့်သွင်းခဲ့မှု (နောက်ဆုံး ၂၀)</h3>
+      <div class="tablescroll">
       <table class="dtable">
-        <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>မီတာဖတ်အမည်</th><th>မှတ်ချက်</th></tr></thead>
+        <thead><tr><th>အချိန်</th><th>Code</th><th>အမည်</th><th>ဖတ်ချက်</th><th>User</th><th>မှတ်ချက်</th></tr></thead>
         <tbody id="adminRecentTable"><tr><td colspan="6">Loading…</td></tr></tbody>
       </table>
+      </div>
     </div>
+
 
 
   </main>
@@ -355,6 +367,9 @@ let currentLineFilter = null;
 let currentCategoryFilter = null;
 let cameFrom = 'userHome';    
 
+function orLabel(v, fallback){
+  return (v===null || v===undefined || v==='') ? fallback : v;
+}
 function toast(msg, isErr){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -366,7 +381,6 @@ function show(id){
     document.getElementById(s).classList.toggle('hidden', s!==id);
   });
 }
-
 
 async function doLogin(){
   const u = document.getElementById('loginUser').value.trim();
@@ -391,6 +405,7 @@ async function doLogin(){
         document.getElementById('adminDisplayName').textContent = session.displayName;
         show('adminScreen');
         loadAdminStats();
+        updateNotifyBtnLabel();
       } else {
         document.getElementById('uhDisplayName').textContent = session.displayName;
         show('userHomeScreen');
@@ -400,7 +415,7 @@ async function doLogin(){
       errEl.textContent = data.message || 'ဝင်ရောက်၍ မရပါ';
     }
   } catch(e){
-    errEl.textContent = 'URL ကို ပြန်စစ်ပါ';
+    errEl.textContent = 'ချိတ်ဆက်မှု အမှား — URL ကို ပြန်စစ်ပါ';
   } finally {
     btn.disabled = false; btn.textContent = 'ဝင်မည်';
   }
@@ -408,9 +423,83 @@ async function doLogin(){
 
 function doLogout(){
   session = null; records = []; openPanelCode = null; currentLineFilter = null; currentCategoryFilter = null; currentFilter='all';
+  stopNotifyPolling();
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   show('loginScreen');
+}
+
+let notifyInterval = null;
+let lastKnownSubmissionCount = null;
+
+function updateNotifyBtnLabel(){
+  const btn = document.getElementById('notifyBtn');
+  if(!btn) return;
+  if(!('Notification' in window)){ btn.textContent = '🔕 Notification မရ'; btn.disabled = true; return; }
+  if(Notification.permission === 'granted' && notifyInterval){ btn.textContent = '🔔 Notification ဖွင့်ထားသည်'; }
+  else { btn.textContent = '🔔 Notification ဖွင့်ရန်'; }
+}
+
+function enableNotifications(){
+  if(!('Notification' in window)){ toast('ဒီ browser က Notification ကို support မလုပ်ပါ', true); return; }
+  Notification.requestPermission().then(perm=>{
+    if(perm === 'granted'){
+      toast('Notification ဖွင့်ပြီးပါပြီ ✓ — ဒီ browser tab ဖွင့်ထားသရွေ့ အလုပ်လုပ်ပါမယ်');
+      startNotifyPolling();
+    } else {
+      toast('Notification ခွင့်ပြုချက် ရရှိမှု မအောင်မြင်ပါ', true);
+    }
+    updateNotifyBtnLabel();
+  });
+}
+
+function startNotifyPolling(){
+  if(notifyInterval) return; 
+  lastKnownSubmissionCount = null;
+  checkForNewSubmissions(true); 
+  notifyInterval = setInterval(checkForNewSubmissions, 20000); 
+  updateNotifyBtnLabel();
+}
+
+function stopNotifyPolling(){
+  if(notifyInterval){ clearInterval(notifyInterval); notifyInterval = null; }
+  lastKnownSubmissionCount = null;
+}
+
+async function checkForNewSubmissions(isFirstCheck){
+  if(!session || session.role !== 'admin') return;
+  try{
+    const res = await fetch(`${SCRIPT_URL}?action=getLatestSubmission`);
+    const data = await res.json();
+    if(!data.success){
+      if(isFirstCheck) toast(`Notification setup မအောင်မြင်ပါ — Code.gs ကို redeploy (New version) ပြန်လုပ်ပေးပါ (${data.message||'Invalid action'})`, true);
+      return;
+    }
+
+    if(lastKnownSubmissionCount === null){
+      lastKnownSubmissionCount = data.count; 
+      return;
+    }
+    if(data.count > lastKnownSubmissionCount){
+      const diff = data.count - lastKnownSubmissionCount;
+      lastKnownSubmissionCount = data.count;
+      const body = data.latest
+        ? `${data.latest.name} (${data.latest.code}) — ဖတ်ချက် ${data.latest.reading}${data.latest.remark ? ' · '+data.latest.remark : ''}`
+        : '';
+      const title = diff > 1 ? `ဖတ်ချက်အသစ် ${diff} ခု ဝင်လာသည်` : 'ဖတ်ချက်အသစ် ဝင်လာသည်';
+      toast(`${title}${body ? ' — '+body : ''}`);
+
+      if('Notification' in window && Notification.permission === 'granted'){
+        const n = new Notification(title, { body });
+        n.onclick = () => { window.focus(); };
+      }
+      if(!document.getElementById('adminScreen').classList.contains('hidden')) loadAdminStats();
+    } else {
+      lastKnownSubmissionCount = data.count;
+    }
+  } catch(e){
+    if(isFirstCheck) toast('Notification setup မအောင်မြင်ပါ — ချိတ်ဆက်မှု အမှား', true);
+  }
 }
 
 async function loadData(){
@@ -453,7 +542,7 @@ function renderUserHome(){
 
     const perCat = {};
     records.forEach(r=>{
-      const cat = r.lineNo || 'အမည်မသိ';
+      const cat = orLabel(r.lineNo, 'အမည်မသိ');
       if(!perCat[cat]) perCat[cat] = { total:0, pending:0 };
       perCat[cat].total++;
       if(r.status !== 'Read') perCat[cat].pending++;
@@ -484,7 +573,7 @@ function renderUserHome(){
 
     const perLine = {};
     scoped.forEach(r=>{
-      const ln = r.lineNo2 || 'အမည်မသိ';
+      const ln = orLabel(r.lineNo2, 'အမည်မသိ');
       if(!perLine[ln]) perLine[ln] = { total:0, pending:0 };
       perLine[ln].total++;
       if(r.status !== 'Read') perLine[ln].pending++;
@@ -492,7 +581,7 @@ function renderUserHome(){
 
     const lines = Object.keys(perLine).sort();
     if(lines.length === 0){
-      gridEl.innerHTML = '<div class="empty">ဒီ Line ထဲမှာ data မတွေ့ပါ</div>';
+      gridEl.innerHTML = '<div class="empty">ဒီ Linee ထဲမှာ data မတွေ့ပါ</div>';
       return;
     }
     gridEl.innerHTML = lines.map(ln=>{
@@ -539,8 +628,6 @@ function backFromList(){
   else { show('userHomeScreen'); renderUserHome(); }
 }
 
-
-
 function setFilter(f){
   currentFilter = f;
   document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.f===f));
@@ -559,7 +646,7 @@ function renderList(){
     if(currentFilter === 'read' && r.status !== 'Read') return false;
     if(!q) return true;
     return [r.code, r.name, r.address, r.meterNo, r.lineNo, r.lineNo2].some(v=>
-      String(v||'').toLowerCase().includes(q)
+      String(v ?? '').toLowerCase().includes(q)
     );
   });
 
