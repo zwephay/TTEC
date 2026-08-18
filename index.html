@@ -131,6 +131,7 @@
   .meta2{display:flex;gap:14px;margin-top:10px;font-size:12px;color:#5C6B62;flex-wrap:wrap;}
   .meta2 b{color:var(--ink);font-weight:600;}
   .lastread{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green);}
+  .remarknote{background:var(--red-bg);color:var(--red);font-size:12px;padding:8px 10px;border-radius:6px;margin-top:8px;line-height:1.5;}
 
   .panel{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:none;}
   .panel.open{display:block;}
@@ -680,6 +681,7 @@ function renderList(){
         <span>နောက်ဆုံးဖတ်ချက် <span class="lastread mono">${escapeHtml(r.lastReading)}</span></span>
         <span>(${lastDate})</span>
       </div>
+      ${r.remark ? `<div class="remarknote">⚠️ အကြောင်းအရာ — ${escapeHtml(r.remark)}</div>` : ''}
 
       <div class="panel ${isOpen?'open':''}" onclick="event.stopPropagation()">
         <div class="digitwrap">
